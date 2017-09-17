@@ -5,18 +5,19 @@ import com.badlogic.gdx.math.Matrix4
 import java.util.*
 
 private val rndGen = Random()
-fun evalRandomFloat(min: Float = 0f, max: Float = 1f) = rndGen.nextFloat() * (max - min) + min
+internal fun evalRandomFloat(min: Float = 0f, max: Float = 1f) = rndGen.nextFloat() * (max - min) + min
 
-fun Matrix3.transformationMatrix(srcRect: Rect, dstRect: Rect) {
-    this.idt()
-            .translate(dstRect.pos.x, dstRect.pos.y)
-            .scale(dstRect.getWidth() / srcRect.getWidth(), dstRect.getHeight() / srcRect.getHeight())
-            .translate(-srcRect.pos.x, -srcRect.pos.y)
+internal fun Matrix3.transformationMatrix(srcRect: Rect, dstRect: Rect) {
+    idt()
+            .translate(dstRect.centerPos.x, dstRect.centerPos.y)
+            .scale(dstRect.width / srcRect.width, dstRect.height / srcRect.height)
+            .translate(-srcRect.centerPos.x, -srcRect.centerPos.y)
 }
 
-fun Matrix4.transformationMatrix(srcRect: Rect, dstRect: Rect) {
-    this.idt()
-            .translate(dstRect.pos.x, dstRect.pos.y, 0f)
-            .scale(dstRect.getWidth() / srcRect.getWidth(), dstRect.getHeight() / srcRect.getHeight(), 1f)
-            .translate(-srcRect.pos.x, -srcRect.pos.y, 0f)
+internal fun Matrix4.transformationMatrix(srcRect: Rect, dstRect: Rect) {
+    idt()
+            .translate(dstRect.centerPos.x, dstRect.centerPos.y, 0f)
+            .scale(dstRect.width / srcRect.width, dstRect.height / srcRect.height, 1f)
+            .translate(-srcRect.centerPos.x, -srcRect.centerPos.y, 0f)
 }
+

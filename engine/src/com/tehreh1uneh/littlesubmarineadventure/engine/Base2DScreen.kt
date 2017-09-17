@@ -4,6 +4,7 @@ import com.badlogic.gdx.Game
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.InputProcessor
 import com.badlogic.gdx.Screen
+import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.math.Matrix3
 import com.badlogic.gdx.math.Matrix4
 import com.tehreh1uneh.littlesubmarineadventure.engine.math.Rect
@@ -17,7 +18,7 @@ open class Base2DScreen (protected val game: Game) : Screen, InputProcessor{
     protected val worldBounds = Rect()
     protected val matrixScreenToWorld = Matrix3()
     protected val matrixWorldToGl = Matrix4()
-
+    protected var batch: SpriteBatch? = null
 
     //region ScreenInterfaceMethods
 
@@ -25,6 +26,8 @@ open class Base2DScreen (protected val game: Game) : Screen, InputProcessor{
         println("screen showed")
 
         Gdx.input.inputProcessor = this
+        if (batch != null) throw RuntimeException("batch != null. Screen setting without invoke dispose() method.")
+        batch = SpriteBatch()
     }
 
     override fun resize(width: Int, height: Int) {

@@ -3,7 +3,7 @@ import com.tehreh1uneh.littlesubmarineadventure.engine.math.Rect
 import org.junit.Assert
 import org.junit.Test
 
-class RectTestIsOutside() {
+class RectTestBorders() {
 
     @Test
     fun rectTestIsOutside(){
@@ -15,11 +15,11 @@ class RectTestIsOutside() {
         val touch4 = Vector2(25f,10f)
         val touch5 = Vector2(10f,25f)
 
-        Assert.assertEquals(false, rect.isOutside(touch1))
-        Assert.assertEquals(true, rect.isOutside(touch2))
-        Assert.assertEquals(true, rect.isOutside(touch3))
-        Assert.assertEquals(true, rect.isOutside(touch4))
-        Assert.assertEquals(true, rect.isOutside(touch5))
+        Assert.assertEquals(false, !(rect intersect touch1))
+        Assert.assertEquals(true, !(rect intersect touch2))
+        Assert.assertEquals(true, !(rect intersect touch3))
+        Assert.assertEquals(true, !(rect intersect touch4))
+        Assert.assertEquals(true, !(rect intersect touch5))
     }
 
     @Test
@@ -33,14 +33,12 @@ class RectTestIsOutside() {
         val touch5 = Vector2(10f,25f)
         val touch6 = Vector2(1f,10f)
 
-        Assert.assertEquals(true, rect.isInside(touch1))
-        Assert.assertEquals(true, rect.isInside(touch2))
-        Assert.assertEquals(false, rect.isInside(touch3))
-        Assert.assertEquals(false, rect.isInside(touch4))
-        Assert.assertEquals(false, rect.isInside(touch5))
-        Assert.assertEquals(false, rect.isInside(touch6))
-
-
+        Assert.assertEquals(true, rect intersect touch1)
+        Assert.assertEquals(true, rect intersect touch2)
+        Assert.assertEquals(false, rect intersect touch3)
+        Assert.assertEquals(false, rect intersect touch4)
+        Assert.assertEquals(false, rect intersect touch5)
+        Assert.assertEquals(false, rect intersect touch6)
     }
 
 }

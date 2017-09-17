@@ -2,57 +2,68 @@ package com.tehreh1uneh.littlesubmarineadventure.engine.math
 
 import com.badlogic.gdx.math.Vector2
 
-open class Rect(x: Float = 0f, y: Float = 0f, protected var halfWidth: Float = 0f, protected var halfHeight: Float = 0f) {
+open class Rect(x: Float = 0f, y: Float = 0f, private var halfWidth: Float = 0f, private var halfHeight: Float = 0f) {
 
-    val pos = Vector2()
+    constructor(other: Rect) : this(other.centerPos.x, other.centerPos.y, other.halfWidth, other.halfHeight)
+
+    val centerPos = Vector2()
 
     init {
-        pos.set(x, y)
+        centerPos.set(x, y)
     }
 
-    constructor(other: Rect) : this(other.pos.x, other.pos.y, other.halfWidth, other.halfHeight)
+    //region PropertiesWithoutBackingFields
 
-    //region Getters
+    var width: Float
+        get() = halfWidth * 2f
+        set(value) {
+            halfWidth = value / 2f
+        }
 
-    fun getLeft() = pos.x - halfWidth
-    fun getTop() = pos.y + halfHeight
-    fun getRight() = pos.x + halfWidth
-    fun getBottom() = pos.y - halfHeight
-    fun getWidth() = halfWidth * 2
-    fun getHeight() = halfHeight * 2
+    var height: Float
+        get() = halfHeight * 2f
+        set(value) {
+            halfHeight = value / 2f
+        }
+
+    var left: Float
+        get() = centerPos.x - halfWidth
+        set(value) {
+            centerPos.x = value + halfWidth
+        }
+
+    var top: Float
+        get() = centerPos.y + halfHeight
+        set(value) {
+            centerPos.y = value - halfHeight
+        }
+
+    var right: Float
+        get() = centerPos.x + halfWidth
+        set(value) {
+            centerPos.x = value - halfWidth
+        }
+
+    var bottom: Float
+        get() = centerPos.y - halfHeight
+        set(value) {
+            centerPos.y = value + halfHeight
+        }
     //endregion
 
     //region Setters
 
     fun set(other: Rect) {
-        pos.set(other.pos.x, other.pos.y)
+        centerPos.set(other.centerPos.x, other.centerPos.y)
         halfWidth = other.halfWidth
         halfHeight = other.halfHeight
     }
 
-    fun setLeft(left: Float) {
-        pos.x = left + halfWidth
-    }
-
-    fun setTop(top: Float) {
-        pos.y = top - halfHeight
-    }
-
-    fun setRight(right: Float) {
-        pos.x = right - halfWidth
-    }
-
-    fun setBottom(bottom: Float) {
-        pos.y = bottom + halfHeight
-    }
-
-    fun setSize(width: Float = halfWidth * 2f, height: Float = halfHeight * 2f) {
-        halfWidth = width / 2f
-        halfHeight = height / 2f
+    fun setSize(width: Float, height: Float) {
+        this.width = width
+        this.height = height
     }
     //endregion
 
-    fun isInside(touch: Vector2) = touch.x in getLeft()..getRight() && touch.y in getBottom()..getTop()
-    fun isOutside(touch: Vector2) = touch.x !in getLeft()..getRight() || touch.y !in getBottom()..getTop()
-
+    infix fun intersect(touch: Vector2) = touch.x in left..right && touch.y in bottom..top
 }
