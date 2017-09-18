@@ -7,87 +7,117 @@ import com.badlogic.gdx.Screen
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.math.Matrix3
 import com.badlogic.gdx.math.Matrix4
-import com.tehreh1uneh.littlesubmarineadventure.engine.math.Rect
+import com.badlogic.gdx.math.Vector2
+import com.tehreh1uneh.littlesubmarineadventure.engine.sprites.Rect
+import com.tehreh1uneh.littlesubmarineadventure.engine.utils.toTransformationMatrix
 
-const val WORLD_HEIGHT = 1f
-val glBounds = Rect(halfWidth = 1f, halfHeight = 1f)
+const val WORLD_WIDTH = 1f
+private val glBounds = Rect(halfWidth = 1f, halfHeight = 1f)
 
-open class Base2DScreen (protected val game: Game) : Screen, InputProcessor{
+open class Base2DScreen(protected val game: Game) : Screen, InputProcessor {
 
-    protected val screenBounds = Rect()
+    private val screenBounds = Rect()
     protected val worldBounds = Rect()
-    protected val matrixScreenToWorld = Matrix3()
-    protected val matrixWorldToGl = Matrix4()
-    protected var batch: SpriteBatch? = null
+    private val matrixScreenToWorld = Matrix3()
+    private val matrixWorldToGl = Matrix4()
+    protected var batch = SpriteBatch()
 
     //region ScreenInterfaceMethods
 
     override fun show() {
         println("screen showed")
-
         Gdx.input.inputProcessor = this
-        if (batch != null) throw RuntimeException("batch != null. Screen setting without invoke dispose() method.")
-        batch = SpriteBatch()
     }
 
-    override fun resize(width: Int, height: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    protected open fun resize(worldBounds: Rect) {}
+
+    override final fun resize(width: Int, height: Int) {
+        println("screen resized(w:$width, h:$height)")
+
+        screenBounds.setSize(width.toFloat(), height.toFloat())
+        screenBounds.left = 0f
+        screenBounds.bottom = 0f
+
+        worldBounds.width = WORLD_WIDTH
+        worldBounds.height = WORLD_WIDTH * (height.toFloat() / width.toFloat())
+
+        matrixWorldToGl.toTransformationMatrix(worldBounds, glBounds)
+        batch.projectionMatrix = matrixWorldToGl
+        matrixScreenToWorld.toTransformationMatrix(screenBounds, worldBounds)
+        resize(worldBounds)
     }
 
     override fun render(delta: Float) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        //fun update(delta: Float)
+        //fun checkCollisions()
+        //fun deleteDestroyed()
+        //fun draw()
     }
 
     override fun pause() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        println("screen paused")
     }
 
     override fun resume() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        println("screen resumed")
     }
 
     override fun hide() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        println("screen hid")
+        dispose()
     }
 
     override fun dispose() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        println("screen disposed")
+        batch.dispose()
     }
     //endregion
 
+    protected open fun touchDown(touch: Vector2, pointer: Int) {}
+    protected open fun touchMove(touch: Vector2, pointer: Int) {}
+    protected open fun touchUp(touch: Vector2, pointer: Int) {}
+
     //region InputProcessorMethods
-    override fun touchUp(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    private val touch = Vector2()
+
+    override final fun touchDown(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
+        touch.set(screenBounds.width - 1f - screenX, screenY.toFloat()).mul(matrixScreenToWorld)
+        touchDown(touch, pointer)
+        return false
     }
 
-    override fun mouseMoved(screenX: Int, screenY: Int): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override final fun touchUp(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
+        touch.set(screenBounds.width - 1f - screenX, screenY.toFloat()).mul(matrixScreenToWorld)
+        touchUp(touch, pointer)
+        return false
     }
 
-    override fun keyTyped(character: Char): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun scrolled(amount: Int): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun keyUp(keycode: Int): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun touchDragged(screenX: Int, screenY: Int, pointer: Int): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override final fun touchDragged(screenX: Int, screenY: Int, pointer: Int): Boolean {
+        touch.set(screenBounds.width - 1f - screenX, screenY.toFloat()).mul(matrixScreenToWorld)
+        touchMove(touch, pointer)
+        return false
     }
 
     override fun keyDown(keycode: Int): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return false
     }
 
-    override fun touchDown(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun mouseMoved(screenX: Int, screenY: Int): Boolean {
+        return false
     }
+
+    override fun keyTyped(character: Char): Boolean {
+        return false
+    }
+
+    override fun scrolled(amount: Int): Boolean {
+        return false
+    }
+
+    override fun keyUp(keycode: Int): Boolean {
+        return false
+    }
+
     //endregion
-
 }
 

@@ -1,5 +1,5 @@
 import com.badlogic.gdx.math.Vector2
-import com.tehreh1uneh.littlesubmarineadventure.engine.math.Rect
+import com.tehreh1uneh.littlesubmarineadventure.engine.sprites.Rect
 import org.junit.Assert
 import org.junit.Test
 
@@ -8,7 +8,7 @@ class RectTestBorders() {
     @Test
     fun rectTestIsOutside(){
 
-        val rect = Rect(10f,10f,5f,5f)
+        val rect = Rect(10f, 10f, 5f, 5f)
         val touch1 = Vector2(10f,10f)
         val touch2 = Vector2(1f,10f)
         val touch3 = Vector2(10f,1f)
@@ -25,7 +25,7 @@ class RectTestBorders() {
     @Test
     fun rectTestIsInside(){
 
-        val rect = Rect(10f,10f,5f,5f)
+        val rect = Rect(10f, 10f, 5f, 5f)
         val touch1 = Vector2(10f,10f)
         val touch2 = Vector2(7f,12f)
         val touch3 = Vector2(10f,1f)
