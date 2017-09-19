@@ -3,19 +3,15 @@ package com.tehreh1uneh.littlesubmarineadventure.engine.sprites
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 
-open class Sprite() : Rect() {
+open class Sprite(vararg region: TextureRegion) : Rect() {
 
-    lateinit var regions: Array<TextureRegion>
+    private var regions: Array<TextureRegion> = region as Array<TextureRegion>
+
     protected var frame = 0
     var scaleX = 1f
     var scaleY = 1f
     var rotation = 0f
-
-    constructor(region: TextureRegion) : this() {
-        regions = arrayOf(TextureRegion(region))
-    }
-
-    fun resize(worldBounds: Rect) {}
+    var destroyed = false
 
     fun draw(batch: SpriteBatch) {
         batch.draw(regions[frame], left, bottom,  halfWidth, halfHeight, width, height, scaleX, scaleY, rotation)
@@ -31,4 +27,8 @@ open class Sprite() : Rect() {
         setSize(height / ratio, height)
     }
 
+    fun setScale(scale: Float = 1f){
+        scaleX = scale
+        scaleY = scale
+    }
 }
