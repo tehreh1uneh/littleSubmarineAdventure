@@ -81,13 +81,15 @@ open class Base2DScreen(protected val game: Game) : Screen, InputProcessor {
     private val touch = Vector2()
 
     override final fun touchDown(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
-        touch.set(screenBounds.width - 1f - screenX, screenY.toFloat()).mul(matrixScreenToWorld)
+//        touch.set(screenBounds.width - 1f - screenX, screenY.toFloat()).mul(matrixScreenToWorld)
+        touch.set(screenX.toFloat(), screenBounds.height - screenY.toFloat()).mul(matrixScreenToWorld)
         touchDown(touch, pointer)
         return false
     }
 
     override final fun touchUp(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
-        touch.set(screenBounds.width - 1f - screenX, screenY.toFloat()).mul(matrixScreenToWorld)
+//        touch.set(screenBounds.width - 1f - screenX, screenY.toFloat()).mul(matrixScreenToWorld)
+        touch.set(screenX.toFloat(), screenBounds.height - screenY.toFloat()).mul(matrixScreenToWorld)
         touchUp(touch, pointer)
         return false
     }

@@ -1,0 +1,68 @@
+
+atlas_menuScreen.png
+format: RGBA8888
+filter: MipMapLinearNearest,Linear
+repeat: none
+submarine
+  rotate: false
+  xy: 4, 4
+  size: 301, 221
+  orig: 301, 221
+  offset: 0, 0
+  index: -1
+bubble(1)
+  rotate: false
+  xy: 313, 24
+  size: 201, 201
+  orig: 201, 201
+  offset: 0, 0
+  index: -1
+bubble(2)
+  rotate: false
+  xy: 522, 24
+  size: 201, 201
+  orig: 201, 201
+  offset: 0, 0
+  index: -1
+bubble(3)
+  rotate: false
+  xy: 731, 24
+  size: 201, 201
+  orig: 201, 201
+  offset: 0, 0
+  index: -1
+button_music_off
+  rotate: false
+  xy: 940, 114
+  size: 104, 111
+  orig: 104, 111
+  offset: 0, 0
+  index: -1
+button_music_on
+  rotate: false
+  xy: 1052, 114
+  size: 104, 111
+  orig: 104, 111
+  offset: 0, 0
+  index: -1
+button_sound_off
+  rotate: false
+  xy: 1164, 114
+  size: 104, 111
+  orig: 104, 111
+  offset: 0, 0
+  index: -1
+button_sound_on
+  rotate: false
+  xy: 1276, 114
+  size: 104, 111
+  orig: 104, 111
+  offset: 0, 0
+  index: -1
+button_start_game
+  rotate: false
+  xy: 1388, 114
+  size: 104, 111
+  orig: 104, 111
+  offset: 0, 0
+  index: -1
