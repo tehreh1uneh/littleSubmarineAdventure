@@ -3,6 +3,7 @@ package com.tehreh1uneh.littlesubmarineadventure.engine.utils
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.math.Matrix3
 import com.badlogic.gdx.math.Matrix4
+import com.badlogic.gdx.math.Vector2
 import com.tehreh1uneh.littlesubmarineadventure.engine.sprites.Rect
 import java.util.*
 
@@ -23,6 +24,9 @@ internal fun Matrix4.toTransformationMatrix(srcRect: Rect, dstRect: Rect) {
             .translate(-srcRect.centerPos.x, -srcRect.centerPos.y, 0f)
 }
 
+operator fun Vector2.times(matrix: Matrix3){
+    mul(matrix)
+}
 
 internal fun TextureRegion.split(rows: Int = 1, columns: Int = 1, frames: Int = 2): Array<TextureRegion> {
 

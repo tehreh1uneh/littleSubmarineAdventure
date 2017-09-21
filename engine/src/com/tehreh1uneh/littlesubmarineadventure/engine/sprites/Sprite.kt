@@ -14,7 +14,7 @@ open class Sprite(vararg region: TextureRegion) : Rect() {
     var destroyed = false
 
     fun draw(batch: SpriteBatch) {
-        batch.draw(regions[frame], left, bottom, halfWidth, halfHeight, width, height, scaleX, scaleY, rotation)
+        if (!destroyed) batch.draw(regions[frame], left, bottom, halfWidth, halfHeight, width, height, scaleX, scaleY, rotation)
     }
 
     fun setWidthProportion(width: Float = 1f) {

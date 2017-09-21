@@ -86,7 +86,6 @@ class MenuScreen(game: Game) : Base2DScreen(game), TouchListener {
     //region UserActions
 
     override fun touchDown(touch: Vector2, pointer: Int) {
-//        println("height(${worldBounds.bottom} to ${worldBounds.top})\nwidth(${worldBounds.left} to ${worldBounds.right})\nx:${touch.x}, y:${touch.y}")
         startButton.touchDown(touch, pointer)
     }
 
