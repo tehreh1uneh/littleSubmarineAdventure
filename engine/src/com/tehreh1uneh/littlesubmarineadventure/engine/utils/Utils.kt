@@ -30,16 +30,6 @@ internal fun TextureRegion.split(rows: Int = 1, columns: Int = 2, frames: Int = 
     val elementWidth = regionWidth / columns
     val elementHeight = regionHeight / rows
 
-//    val regions: Array<TextureRegion> = emptyArray()
-//    var frame = 0
-//
-//    outerLoop@for (r in 0 until rows) {
-//        for (c in 0 until columns) {
-//            regions[frame++] = TextureRegion(this, elementWidth * c, elementHeight * r, elementWidth, elementHeight)
-//            if (frame == frames) break@outerLoop
-//        }
-//    }
-
-    return Array(frames, { i -> TextureRegion(this, elementWidth * (i % columns), elementHeight * (i / columns), elementWidth, elementHeight) })
+    return Array(frames, { TextureRegion(this, elementWidth * (it % columns), elementHeight * (it / columns), elementWidth, elementHeight) })
 }
 

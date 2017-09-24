@@ -1,13 +1,12 @@
 package com.tehreh1uneh.littlesubmarineadventure.screens.menu_screen
 
 import com.badlogic.gdx.Game
+import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.audio.Music
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.math.Vector2
-import com.tehreh1uneh.littlesubmarineadventure.common.PATH_BG
-import com.tehreh1uneh.littlesubmarineadventure.common.PATH_MENU_ATLAS
-import com.tehreh1uneh.littlesubmarineadventure.common.PATH_SEABED
-import com.tehreh1uneh.littlesubmarineadventure.common.evalRandomFloat
+import com.tehreh1uneh.littlesubmarineadventure.common.*
 import com.tehreh1uneh.littlesubmarineadventure.engine.Base2DScreen
 import com.tehreh1uneh.littlesubmarineadventure.engine.Sprite2DTexture
 import com.tehreh1uneh.littlesubmarineadventure.engine.sprites.Axis
@@ -15,6 +14,7 @@ import com.tehreh1uneh.littlesubmarineadventure.engine.sprites.OnTouchScalingBut
 import com.tehreh1uneh.littlesubmarineadventure.engine.sprites.Rect
 import com.tehreh1uneh.littlesubmarineadventure.engine.sprites.Sprite
 import com.tehreh1uneh.littlesubmarineadventure.engine.ui.TouchListener
+import com.tehreh1uneh.littlesubmarineadventure.screens.game_screen.GameScreen
 
 private const val BUTTON_WIDTH = 0.1f
 private const val BUTTON_SCALE = 0.9f
@@ -39,6 +39,8 @@ class MenuScreen(game: Game) : Base2DScreen(game), TouchListener {
         Bubble(menuAtlas.findRegion("bubble(${evalRandomFloat(1f, 4f).toInt()})"), vBoth = evalRandomFloat(V_BUBBLE_MIN, V_BUBBLE_MAX), axis = Axis.X, moveDirection = Axis.Y)
     }
 
+    private lateinit var mainMusic: Music
+
     //region ScreenEvents
 
     override fun show() {
@@ -46,10 +48,15 @@ class MenuScreen(game: Game) : Base2DScreen(game), TouchListener {
         background.setWidthProportion()
         seabed.setWidthProportion()
         startButton.setWidthProportion(BUTTON_WIDTH)
+        if (playMusic) {
+            mainMusic = Gdx.audio.newMusic(Gdx.files.internal(PATH_MAIN_MUSIC))
+            mainMusic.isLooping = true
+            mainMusic.volume = 0.2f
+            mainMusic.play()
+        }
     }
 
     override fun resize(worldBounds: Rect) {
-        super.resize(worldBounds)
         seabed.bottom = worldBounds.bottom
         startButton.left = worldBounds.left + worldBounds.width * 0.02f
         startButton.bottom = worldBounds.bottom + worldBounds.height * 0.2f
@@ -85,13 +92,14 @@ class MenuScreen(game: Game) : Base2DScreen(game), TouchListener {
     }
 
     override fun hide() {
-        super.hide()
+        dispose()
     }
 
     override fun dispose() {
         textureBg.dispose()
         textureSeabed.dispose()
         menuAtlas.dispose()
+        mainMusic.dispose()
 
         super.dispose()
     }
@@ -99,7 +107,9 @@ class MenuScreen(game: Game) : Base2DScreen(game), TouchListener {
 
     override fun actionPerformed(src: Any) {
         if (src == startButton) {
-            println("Start button pressed!")
+            game.screen = GameScreen(game)
+        } else {
+            throw IllegalArgumentException(""""Unknown source of fun "actionPerformed" in menuScreen""")
         }
     }
 

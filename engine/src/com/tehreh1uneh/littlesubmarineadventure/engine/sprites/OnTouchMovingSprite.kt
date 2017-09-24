@@ -56,5 +56,6 @@ open class OnTouchMovingSprite(region: TextureRegion,
         touchPosition.set(touch)
         return true
     }
+
 }
 

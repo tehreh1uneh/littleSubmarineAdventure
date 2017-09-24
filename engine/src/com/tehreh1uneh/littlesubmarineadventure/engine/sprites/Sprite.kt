@@ -12,13 +12,12 @@ open class Sprite(vararg region: TextureRegion) : Rect() {
     var scaleX = 1f
     var scaleY = 1f
     var rotation = 0f
-    var destroyed = false
 
     open fun resize(worldBounds: Rect) {}
     open fun update(delta: Float) {}
 
     fun draw(batch: SpriteBatch) {
-        if (!destroyed) batch.draw(regions[frame], left, bottom, halfWidth, halfHeight, width, height, scaleX, scaleY, rotation)
+        batch.draw(regions[frame], left, bottom, halfWidth, halfHeight, width, height, scaleX, scaleY, rotation)
     }
 
     fun setWidthProportion(width: Float = 1f) {
