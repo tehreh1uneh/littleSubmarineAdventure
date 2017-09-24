@@ -7,14 +7,15 @@ import com.tehreh1uneh.littlesubmarineadventure.engine.sprites.Sprite
 
 private const val SIZE = 0.1f
 
-private const val V_FALL_MIN = 0.07f
-private const val V_FALL_MAX = 0.15f
+private const val V_FALL_MIN = 0.3f
+private const val V_FALL_MAX = 0.6f
 
-private const val V_ASCENT_MIN = 0.06f
-private const val V_ASCENT_MAX = 0.15f
+private const val V_ASCENT_MIN = 0.05f
+private const val V_ASCENT_MAX = 0.2f
+
+private const val COMMON_RATIO = 1.3f
 
 private const val SPEEDUP_INTERVAL = 0.1f
-private const val SPEEDUP_STEP = 0.03f
 
 class Submarine(region: TextureRegion) : Sprite(region) {
 
@@ -22,9 +23,10 @@ class Submarine(region: TextureRegion) : Sprite(region) {
     private var pressed: Boolean = false
     private val v = Vector2()
     private var interval: Float = 0f
-
+    private val worldBounds = Rect()
 
     override fun resize(worldBounds: Rect) {
+        this.worldBounds.set(worldBounds)
         setWidthProportion(SIZE)
         centerPos.set(worldBounds.left + width, worldBounds.centerPos.y)
     }
@@ -34,11 +36,16 @@ class Submarine(region: TextureRegion) : Sprite(region) {
         if (interval > SPEEDUP_INTERVAL) {
             interval = 0f
 
-            if (pressed && v.y < V_ASCENT_MAX) {
-                v.y += SPEEDUP_STEP
-            } else if (v.y < V_FALL_MAX) {
-                v.y -= SPEEDUP_STEP
+            if (pressed && v.y < V_ASCENT_MAX || v.y < V_FALL_MAX) {
+                v.y *= COMMON_RATIO
             }
+        }
+        if (bottom < worldBounds.bottom) {
+            bottom = worldBounds.bottom
+            if (!pressed) v.setZero()
+        } else if (top > worldBounds.top) {
+            top = worldBounds.top
+            if (pressed) v.setZero()
         }
         centerPos.mulAdd(v, delta)
     }

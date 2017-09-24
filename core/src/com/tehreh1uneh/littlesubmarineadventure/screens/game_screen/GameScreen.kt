@@ -13,7 +13,6 @@ import com.tehreh1uneh.littlesubmarineadventure.engine.Sprite2DTexture
 import com.tehreh1uneh.littlesubmarineadventure.engine.sprites.Rect
 import com.tehreh1uneh.littlesubmarineadventure.engine.sprites.Sprite
 
-
 class GameScreen(game: Game) : Base2DScreen(game) {
 
     private val textureBg = Sprite2DTexture(PATH_BG)
