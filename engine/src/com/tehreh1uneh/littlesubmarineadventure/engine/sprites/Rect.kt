@@ -4,8 +4,6 @@ import com.badlogic.gdx.math.Vector2
 
 open class Rect(x: Float = 0f, y: Float = 0f, protected var halfWidth: Float = 0f, protected var halfHeight: Float = 0f) {
 
-    constructor(other: Rect) : this(other.centerPos.x, other.centerPos.y, other.halfWidth, other.halfHeight)
-
     val centerPos = Vector2()
 
     init {
@@ -65,5 +63,5 @@ open class Rect(x: Float = 0f, y: Float = 0f, protected var halfWidth: Float = 0
     }
     //endregion
 
-    infix fun intersect(touch: Vector2) = touch.x in left..right && touch.y in bottom..top
+    operator fun contains(touch: Vector2) = touch.x in left..right && touch.y in bottom..top
 }

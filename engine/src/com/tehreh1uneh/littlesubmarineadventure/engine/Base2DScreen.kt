@@ -9,8 +9,8 @@ import com.badlogic.gdx.math.Matrix3
 import com.badlogic.gdx.math.Matrix4
 import com.badlogic.gdx.math.Vector2
 import com.tehreh1uneh.littlesubmarineadventure.engine.sprites.Rect
+import com.tehreh1uneh.littlesubmarineadventure.engine.utils.timesAssign
 import com.tehreh1uneh.littlesubmarineadventure.engine.utils.toTransformationMatrix
-import com.tehreh1uneh.littlesubmarineadventure.engine.utils.times
 
 const val WORLD_WIDTH = 1f
 private val glBounds = Rect(halfWidth = 1f, halfHeight = 1f)
@@ -18,7 +18,7 @@ private val glBounds = Rect(halfWidth = 1f, halfHeight = 1f)
 open class Base2DScreen(protected val game: Game) : Screen, InputProcessor {
 
     private val screenBounds = Rect()
-    protected val worldBounds = Rect()
+    private val worldBounds = Rect()
     private val matrixScreenToWorld = Matrix3()
     private val matrixWorldToGl = Matrix4()
     protected var batch = SpriteBatch()
@@ -82,19 +82,19 @@ open class Base2DScreen(protected val game: Game) : Screen, InputProcessor {
     private val touch = Vector2()
 
     override final fun touchDown(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
-        touch.set(screenX.toFloat(), screenBounds.height - screenY.toFloat()) * matrixScreenToWorld
+        touch.set(screenX.toFloat(), screenBounds.height - screenY.toFloat()) *= matrixScreenToWorld
         touchDown(touch, pointer)
         return false
     }
 
     override final fun touchUp(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
-        touch.set(screenX.toFloat(), screenBounds.height - screenY.toFloat()) * matrixScreenToWorld
+        touch.set(screenX.toFloat(), screenBounds.height - screenY.toFloat()) *= matrixScreenToWorld
         touchUp(touch, pointer)
         return false
     }
 
     override final fun touchDragged(screenX: Int, screenY: Int, pointer: Int): Boolean {
-        touch.set(screenBounds.width - 1f - screenX, screenY.toFloat()) * matrixScreenToWorld
+        touch.set(screenX.toFloat(), screenBounds.height - screenY.toFloat()) *= matrixScreenToWorld
         touchMove(touch, pointer)
         return false
     }

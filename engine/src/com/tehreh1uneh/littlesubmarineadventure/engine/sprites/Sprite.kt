@@ -2,6 +2,7 @@ package com.tehreh1uneh.littlesubmarineadventure.engine.sprites
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
+import com.badlogic.gdx.math.Vector2
 
 open class Sprite(vararg region: TextureRegion) : Rect() {
 
@@ -12,6 +13,9 @@ open class Sprite(vararg region: TextureRegion) : Rect() {
     var scaleY = 1f
     var rotation = 0f
     var destroyed = false
+
+    open fun resize(worldBounds: Rect) {}
+    open fun update(delta: Float) {}
 
     fun draw(batch: SpriteBatch) {
         if (!destroyed) batch.draw(regions[frame], left, bottom, halfWidth, halfHeight, width, height, scaleX, scaleY, rotation)
@@ -31,4 +35,17 @@ open class Sprite(vararg region: TextureRegion) : Rect() {
         scaleX = scale
         scaleY = scale
     }
+
+    open fun touchDown(touch: Vector2, pointer: Int): Boolean {
+        return false
+    }
+
+    open fun touchMove(touch: Vector2, pointer: Int): Boolean {
+        return false
+    }
+
+    open fun touchUp(touch: Vector2, pointer: Int): Boolean {
+        return false
+    }
 }
+

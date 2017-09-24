@@ -15,11 +15,11 @@ class RectTestBorders() {
         val touch4 = Vector2(25f,10f)
         val touch5 = Vector2(10f,25f)
 
-        Assert.assertEquals(false, !(rect intersect touch1))
-        Assert.assertEquals(true, !(rect intersect touch2))
-        Assert.assertEquals(true, !(rect intersect touch3))
-        Assert.assertEquals(true, !(rect intersect touch4))
-        Assert.assertEquals(true, !(rect intersect touch5))
+        Assert.assertEquals(false, touch1 !in rect)
+        Assert.assertEquals(true, touch2 !in rect)
+        Assert.assertEquals(true, touch3 !in rect)
+        Assert.assertEquals(true, touch4 !in rect)
+        Assert.assertEquals(true, touch5 !in rect)
     }
 
     @Test
@@ -33,12 +33,12 @@ class RectTestBorders() {
         val touch5 = Vector2(10f,25f)
         val touch6 = Vector2(1f,10f)
 
-        Assert.assertEquals(true, rect intersect touch1)
-        Assert.assertEquals(true, rect intersect touch2)
-        Assert.assertEquals(false, rect intersect touch3)
-        Assert.assertEquals(false, rect intersect touch4)
-        Assert.assertEquals(false, rect intersect touch5)
-        Assert.assertEquals(false, rect intersect touch6)
+        Assert.assertEquals(true, touch1 in rect)
+        Assert.assertEquals(true, touch2 in rect)
+        Assert.assertEquals(false, touch3 in rect)
+        Assert.assertEquals(false, touch4 in rect)
+        Assert.assertEquals(false, touch5 in rect)
+        Assert.assertEquals(false, touch6 in rect)
     }
 
 }

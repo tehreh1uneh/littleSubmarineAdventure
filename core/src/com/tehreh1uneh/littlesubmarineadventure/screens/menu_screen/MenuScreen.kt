@@ -7,8 +7,10 @@ import com.badlogic.gdx.math.Vector2
 import com.tehreh1uneh.littlesubmarineadventure.common.PATH_BG
 import com.tehreh1uneh.littlesubmarineadventure.common.PATH_MENU_ATLAS
 import com.tehreh1uneh.littlesubmarineadventure.common.PATH_SEABED
+import com.tehreh1uneh.littlesubmarineadventure.common.evalRandomFloat
 import com.tehreh1uneh.littlesubmarineadventure.engine.Base2DScreen
 import com.tehreh1uneh.littlesubmarineadventure.engine.Sprite2DTexture
+import com.tehreh1uneh.littlesubmarineadventure.engine.sprites.Axis
 import com.tehreh1uneh.littlesubmarineadventure.engine.sprites.OnTouchScalingButton
 import com.tehreh1uneh.littlesubmarineadventure.engine.sprites.Rect
 import com.tehreh1uneh.littlesubmarineadventure.engine.sprites.Sprite
@@ -16,21 +18,29 @@ import com.tehreh1uneh.littlesubmarineadventure.engine.ui.TouchListener
 
 private const val BUTTON_WIDTH = 0.1f
 private const val BUTTON_SCALE = 0.9f
+private const val BUBBLES_AMOUNT = 30
+private const val V_BUBBLE_MIN = 0.05f
+private const val V_BUBBLE_MAX = 0.1f
+
 
 class MenuScreen(game: Game) : Base2DScreen(game), TouchListener {
 
-    val textureBg = Sprite2DTexture(PATH_BG)
-    val background = Sprite(TextureRegion(textureBg))
+    private val textureBg = Sprite2DTexture(PATH_BG)
+    private val background = Sprite(TextureRegion(textureBg))
 
-    val textureSeabed = Sprite2DTexture(PATH_SEABED)
-    val seabed = Sprite(TextureRegion(textureSeabed))
+    private val textureSeabed = Sprite2DTexture(PATH_SEABED)
+    private val seabed = Sprite(TextureRegion(textureSeabed))
 
-    val menuAtlas = TextureAtlas(PATH_MENU_ATLAS)
+    private val menuAtlas = TextureAtlas(PATH_MENU_ATLAS)
 
-    val textureRegionStartButton = menuAtlas.findRegion("button_start_game")
-    val startButton = OnTouchScalingButton(textureRegionStartButton, touchListener = this, scale = BUTTON_SCALE)
+    private val startButton = OnTouchScalingButton(menuAtlas.findRegion("button_start_game"), touchListener = this, scale = BUTTON_SCALE)
+
+    private val bubbles: Array<Bubble> = Array(BUBBLES_AMOUNT) {
+        Bubble(menuAtlas.findRegion("bubble(${evalRandomFloat(1f, 4f).toInt()})"), vBoth = evalRandomFloat(V_BUBBLE_MIN, V_BUBBLE_MAX), axis = Axis.X, moveDirection = Axis.Y)
+    }
 
     //region ScreenEvents
+
     override fun show() {
         super.show()
         background.setWidthProportion()
@@ -42,18 +52,28 @@ class MenuScreen(game: Game) : Base2DScreen(game), TouchListener {
         super.resize(worldBounds)
         seabed.bottom = worldBounds.bottom
         startButton.left = worldBounds.left + worldBounds.width * 0.02f
-        startButton.bottom = worldBounds.bottom + worldBounds.height * 0.1f
-
+        startButton.bottom = worldBounds.bottom + worldBounds.height * 0.2f
+        bubbles.forEach { it.resize(worldBounds) }
     }
 
     override fun render(delta: Float) {
         batch.begin()
 
-        background.draw(batch)
-        seabed.draw(batch)
-        startButton.draw(batch)
+        update(delta)
+        draw()
 
         batch.end()
+    }
+
+    private fun update(delta: Float) {
+        bubbles.forEach { it.update(delta) }
+    }
+
+    private fun draw() {
+        background.draw(batch)
+        seabed.draw(batch)
+        bubbles.forEach { it.draw(batch) }
+        startButton.draw(batch)
     }
 
     override fun pause() {
@@ -87,10 +107,16 @@ class MenuScreen(game: Game) : Base2DScreen(game), TouchListener {
 
     override fun touchDown(touch: Vector2, pointer: Int) {
         startButton.touchDown(touch, pointer)
+        bubbles.forEach { it.touchDown(touch, pointer) }
+    }
+
+    override fun touchMove(touch: Vector2, pointer: Int) {
+        bubbles.forEach { it.touchMove(touch, pointer) }
     }
 
     override fun touchUp(touch: Vector2, pointer: Int) {
         startButton.touchUp(touch, pointer)
+        bubbles.forEach { it.touchUp(touch, pointer) }
     }
     //endregion
 
