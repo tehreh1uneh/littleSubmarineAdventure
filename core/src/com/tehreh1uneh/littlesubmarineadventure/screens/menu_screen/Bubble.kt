@@ -12,13 +12,20 @@ private const val SIZE_TO_SPEED_RATIO_DEFAULT = 1f
 private const val V_ZERO = 0f
 
 
-class Bubble(region: TextureRegion,
-             size: Float = evalRandomFloat(BUBBLE_SIZE_MIN, BUBBLE_SIZE_MAX),
-             vX: Float = V_ZERO,
-             vY: Float = V_ZERO,
-             axis: Axis,
-             moveDirection: Axis,
-             sizeToSpeedRatio: Float = SIZE_TO_SPEED_RATIO_DEFAULT) : OnTouchMovingSprite(region, axis, moveDirection, vX, vY) {
+class Bubble(
+        region: TextureRegion,
+        size: Float = evalRandomFloat(BUBBLE_SIZE_MIN, BUBBLE_SIZE_MAX),
+        vX: Float = V_ZERO,
+        vY: Float = V_ZERO,
+        axis: Axis,
+        moveDirection: Axis,
+        sizeToSpeedRatio: Float = SIZE_TO_SPEED_RATIO_DEFAULT)
+    : OnTouchMovingSprite(
+        region,
+        axis = axis,
+        moveDirection = moveDirection,
+        vX = vX,
+        vY = vY) {
 
     init {
         setWidthProportion(size)

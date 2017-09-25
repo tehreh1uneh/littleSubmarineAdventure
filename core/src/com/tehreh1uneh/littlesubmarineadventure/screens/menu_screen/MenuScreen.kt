@@ -12,7 +12,6 @@ import com.tehreh1uneh.littlesubmarineadventure.engine.Sprite2DTexture
 import com.tehreh1uneh.littlesubmarineadventure.engine.sprites.Axis
 import com.tehreh1uneh.littlesubmarineadventure.engine.sprites.OnTouchScalingButton
 import com.tehreh1uneh.littlesubmarineadventure.engine.sprites.Rect
-import com.tehreh1uneh.littlesubmarineadventure.engine.sprites.Sprite
 import com.tehreh1uneh.littlesubmarineadventure.engine.ui.TouchListener
 import com.tehreh1uneh.littlesubmarineadventure.screens.game_screen.GameScreen
 
@@ -25,11 +24,8 @@ private const val V_BUBBLE_MAX = 0.1f
 
 class MenuScreen(game: Game) : Base2DScreen(game), TouchListener {
 
-    private val textureBg = Sprite2DTexture(PATH_BG)
-    private val background = Sprite(TextureRegion(textureBg))
-
-    private val textureSeabed = Sprite2DTexture(PATH_SEABED)
-    private val seabed = Sprite(TextureRegion(textureSeabed))
+    private val textureBackground = Sprite2DTexture(PATH_BACKGROUND)
+    private val background = Background(TextureRegion(textureBackground))
 
     private val menuAtlas = TextureAtlas(PATH_MENU_ATLAS)
 
@@ -45,8 +41,6 @@ class MenuScreen(game: Game) : Base2DScreen(game), TouchListener {
 
     override fun show() {
         super.show()
-        background.setWidthProportion()
-        seabed.setWidthProportion()
         startButton.setWidthProportion(BUTTON_WIDTH)
         if (playMusic) {
             mainMusic = Gdx.audio.newMusic(Gdx.files.internal(PATH_MAIN_MUSIC))
@@ -57,7 +51,8 @@ class MenuScreen(game: Game) : Base2DScreen(game), TouchListener {
     }
 
     override fun resize(worldBounds: Rect) {
-        seabed.bottom = worldBounds.bottom
+        background.resize(worldBounds)
+
         startButton.left = worldBounds.left + worldBounds.width * 0.02f
         startButton.bottom = worldBounds.bottom + worldBounds.height * 0.2f
         bubbles.forEach { it.resize(worldBounds) }
@@ -73,12 +68,12 @@ class MenuScreen(game: Game) : Base2DScreen(game), TouchListener {
     }
 
     private fun update(delta: Float) {
+        background.update(delta)
         bubbles.forEach { it.update(delta) }
     }
 
     private fun draw() {
         background.draw(batch)
-        seabed.draw(batch)
         bubbles.forEach { it.draw(batch) }
         startButton.draw(batch)
     }
@@ -96,8 +91,7 @@ class MenuScreen(game: Game) : Base2DScreen(game), TouchListener {
     }
 
     override fun dispose() {
-        textureBg.dispose()
-        textureSeabed.dispose()
+        textureBackground.dispose()
         menuAtlas.dispose()
         mainMusic.dispose()
 
@@ -117,15 +111,18 @@ class MenuScreen(game: Game) : Base2DScreen(game), TouchListener {
 
     override fun touchDown(touch: Vector2, pointer: Int) {
         startButton.touchDown(touch, pointer)
+        background.touchDown(touch, pointer)
         bubbles.forEach { it.touchDown(touch, pointer) }
     }
 
     override fun touchMove(touch: Vector2, pointer: Int) {
+        background.touchMove(touch, pointer)
         bubbles.forEach { it.touchMove(touch, pointer) }
     }
 
     override fun touchUp(touch: Vector2, pointer: Int) {
         startButton.touchUp(touch, pointer)
+        background.touchUp(touch, pointer)
         bubbles.forEach { it.touchUp(touch, pointer) }
     }
     //endregion

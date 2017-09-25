@@ -5,21 +5,17 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.math.Vector2
 import com.tehreh1uneh.littlesubmarineadventure.Submarine
-import com.tehreh1uneh.littlesubmarineadventure.common.PATH_BG
+import com.tehreh1uneh.littlesubmarineadventure.common.Background
+import com.tehreh1uneh.littlesubmarineadventure.common.PATH_BACKGROUND
 import com.tehreh1uneh.littlesubmarineadventure.common.PATH_GAME_ATLAS
-import com.tehreh1uneh.littlesubmarineadventure.common.PATH_SEABED
 import com.tehreh1uneh.littlesubmarineadventure.engine.Base2DScreen
 import com.tehreh1uneh.littlesubmarineadventure.engine.Sprite2DTexture
 import com.tehreh1uneh.littlesubmarineadventure.engine.sprites.Rect
-import com.tehreh1uneh.littlesubmarineadventure.engine.sprites.Sprite
 
 class GameScreen(game: Game) : Base2DScreen(game) {
 
-    private val textureBg = Sprite2DTexture(PATH_BG)
-    private val background = Sprite(TextureRegion(textureBg))
-
-    private val textureSeabed = Sprite2DTexture(PATH_SEABED)
-    private val seabed = Sprite(TextureRegion(textureSeabed))
+    private val textureBackground = Sprite2DTexture(PATH_BACKGROUND)
+    private val background = Background(TextureRegion(textureBackground))
 
     private val atlas = TextureAtlas(PATH_GAME_ATLAS)
 
@@ -27,12 +23,10 @@ class GameScreen(game: Game) : Base2DScreen(game) {
 
     override fun show() {
         super.show()
-        background.setWidthProportion()
-        seabed.setWidthProportion()
     }
 
     override fun resize(worldBounds: Rect) {
-        seabed.bottom = worldBounds.bottom
+        background.resize(worldBounds)
         submarine.resize(worldBounds)
     }
 
@@ -40,7 +34,6 @@ class GameScreen(game: Game) : Base2DScreen(game) {
         batch.begin()
 
         background.draw(batch)
-        seabed.draw(batch)
         submarine.update(delta)
         submarine.draw(batch)
 
@@ -52,8 +45,7 @@ class GameScreen(game: Game) : Base2DScreen(game) {
     }
 
     override fun dispose() {
-        textureBg.dispose()
-        textureSeabed.dispose()
+        textureBackground.dispose()
         atlas.dispose()
 
         super.dispose()
