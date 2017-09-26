@@ -4,9 +4,6 @@ import java.util.*
 
 internal const val PATH_BACKGROUND = "textures/background.png"
 
-internal const val PATH_BG = "textures/blue_background.png"
-internal const val PATH_SEABED = "textures/seabed.png"
-
 internal const val PATH_MENU_ATLAS = "textures/menu/atlas/atlas_menuScreen.pack"
 internal const val PATH_MAIN_MUSIC = "sounds/DST-WaterLily.mp3"
 

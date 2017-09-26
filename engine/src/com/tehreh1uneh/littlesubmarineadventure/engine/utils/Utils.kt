@@ -20,16 +20,15 @@ internal fun Matrix4.toTransformationMatrix(srcRect: Rect, dstRect: Rect) {
             .translate(-srcRect.centerPos.x, -srcRect.centerPos.y, 0f)
 }
 
-operator internal fun Vector2.timesAssign(matrix: Matrix3){
+operator internal fun Vector2.timesAssign(matrix: Matrix3) {
     mul(matrix)
 }
 
 fun TextureRegion.split(rows: Int = 1, columns: Int = 2, frames: Int = 2): Array<TextureRegion> {
 
-    if(frames > rows * columns) throw IllegalArgumentException("Amount of frames more than product of rows and columns")
+    if (frames > rows * columns) throw IllegalArgumentException("Amount of frames more than product of rows and columns")
     val elementWidth = regionWidth / columns
     val elementHeight = regionHeight / rows
 
     return Array(frames, { TextureRegion(this, elementWidth * (it % columns), elementHeight * (it / columns), elementWidth, elementHeight) })
 }
-

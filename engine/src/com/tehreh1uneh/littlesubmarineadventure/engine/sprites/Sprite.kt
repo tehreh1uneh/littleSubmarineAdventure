@@ -16,7 +16,7 @@ open class Sprite(vararg region: TextureRegion) : Rect() {
     open fun resize(worldBounds: Rect) {}
     open fun update(delta: Float) {}
 
-    fun draw(batch: SpriteBatch) {
+    open fun draw(batch: SpriteBatch) {
         batch.draw(regions[frame], left, bottom, halfWidth, halfHeight, width, height, scaleX, scaleY, rotation)
     }
 
