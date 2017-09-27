@@ -3,6 +3,7 @@ package com.tehreh1uneh.littlesubmarineadventure.screens.menu_screen
 import com.badlogic.gdx.Game
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.audio.Music
+import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.math.Vector2
@@ -24,8 +25,8 @@ private const val V_BUBBLE_MAX = 0.1f
 
 class MenuScreen(game: Game) : Base2DScreen(game), TouchListener {
 
-    private val textureBackground = Sprite2DTexture(PATH_BACKGROUND)
-    private val background = Background(TextureRegion(textureBackground))
+    private val backgroundTextures: Array<Texture> = Array(4) { Sprite2DTexture(PATH_BACKGROUND_MASK.replace("%", it.toString())) }
+    private val background = MenuBackground(TextureRegion(backgroundTextures[0]), TextureRegion(backgroundTextures[1]), TextureRegion(backgroundTextures[2]), TextureRegion(backgroundTextures[3]))
 
     private val menuAtlas = TextureAtlas(PATH_MENU_ATLAS)
 
@@ -91,7 +92,7 @@ class MenuScreen(game: Game) : Base2DScreen(game), TouchListener {
     }
 
     override fun dispose() {
-        textureBackground.dispose()
+        backgroundTextures.forEach { it.dispose() }
         menuAtlas.dispose()
         mainMusic.dispose()
 

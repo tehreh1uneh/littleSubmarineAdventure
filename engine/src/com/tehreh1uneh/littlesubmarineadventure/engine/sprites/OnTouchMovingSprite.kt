@@ -11,7 +11,7 @@ open class OnTouchMovingSprite(vararg region: TextureRegion,
                                moveDirection: Axis = Axis.Y,
                                vX: Float = V_ZERO,
                                vY: Float = V_ZERO,
-                               private val vMoveCoefficient: Float = V_MOVE_COEFFICIENT_DEFAULT) : Sprite(*region) {
+                               var vMoveCoefficient: Float = V_MOVE_COEFFICIENT_DEFAULT) : Sprite(*region) {
 
     val v = Vector2()
 
@@ -31,14 +31,14 @@ open class OnTouchMovingSprite(vararg region: TextureRegion,
         centerPos.mulAdd(v, delta)
     }
 
-    override final fun touchDown(touch: Vector2, pointer: Int): Boolean {
+    override fun touchDown(touch: Vector2, pointer: Int): Boolean {
         if (this.pointer != null) return false
         touchPosition.set(touch)
         this.pointer = pointer
         return true
     }
 
-    override final fun touchMove(touch: Vector2, pointer: Int): Boolean =
+    override fun touchMove(touch: Vector2, pointer: Int): Boolean =
             when (axis) {
                 Axis.X -> onTouchMove(touch, pointer) { centerPos.x += touchPosition.sub(it).x * vMoveCoefficient }
                 Axis.Y -> onTouchMove(touch, pointer) { centerPos.y += touchPosition.sub(it).y * vMoveCoefficient }
@@ -46,7 +46,7 @@ open class OnTouchMovingSprite(vararg region: TextureRegion,
                 Axis.NONE -> onTouchMove(touch, pointer) {}
             }
 
-    override final fun touchUp(touch: Vector2, pointer: Int): Boolean {
+    override fun touchUp(touch: Vector2, pointer: Int): Boolean {
         if (this.pointer != pointer) return false
         this.pointer = null
         return true
