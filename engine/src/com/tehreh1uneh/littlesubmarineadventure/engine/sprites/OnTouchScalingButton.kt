@@ -9,25 +9,21 @@ class OnTouchScalingButton(region: TextureRegion, private val touchListener: Tou
     private var pressed = false
     private var pointer: Int = 0
 
-    override fun touchDown(touch: Vector2, pointer: Int): Boolean{
+    override fun touchDown(touch: Vector2, pointer: Int) {
         if (touch in this && !pressed) {
             pressed = true
             this.pointer = pointer
             setScale(scale)
         }
-        return pressed
     }
 
-    override fun touchUp(touch: Vector2, pointer: Int): Boolean {
-
-        if (pointer != this.pointer) return false
+    override fun touchUp(touch: Vector2, pointer: Int) {
+        if (pointer != this.pointer) return
         pressed = false
         setScale()
 
         if (touch in this) {
             touchListener.actionPerformed(this)
-            return true
         }
-        return false
     }
 }

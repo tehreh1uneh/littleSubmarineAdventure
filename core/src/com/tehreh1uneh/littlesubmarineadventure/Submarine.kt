@@ -2,7 +2,7 @@ package com.tehreh1uneh.littlesubmarineadventure
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.math.Vector2
-import com.tehreh1uneh.littlesubmarineadventure.engine.sprites.Rect
+import com.tehreh1uneh.littlesubmarineadventure.engine.Math.Rect
 import com.tehreh1uneh.littlesubmarineadventure.engine.sprites.Sprite
 
 private const val SIZE = 0.1f
@@ -50,23 +50,17 @@ class Submarine(region: TextureRegion) : Sprite(region) {
         centerPos.mulAdd(v, delta)
     }
 
-    override fun touchDown(touch: Vector2, pointer: Int): Boolean {
-        if (this.pointer != null) return false
+    override fun touchDown(touch: Vector2, pointer: Int) {
+        if (this.pointer != null) return
         this.pointer = pointer
         v.y = V_ASCENT_MIN
         pressed = true
-        return true
     }
 
-    override fun touchMove(touch: Vector2, pointer: Int): Boolean {
-        return false
-    }
-
-    override fun touchUp(touch: Vector2, pointer: Int): Boolean {
-        if (pointer != this.pointer) return false
+    override fun touchUp(touch: Vector2, pointer: Int) {
+        if (pointer != this.pointer) return
         this.pointer = null
         v.y = -V_FALL_MIN
         pressed = false
-        return true
     }
 }

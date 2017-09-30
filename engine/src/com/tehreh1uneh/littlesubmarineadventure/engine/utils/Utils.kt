@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.math.Matrix3
 import com.badlogic.gdx.math.Matrix4
 import com.badlogic.gdx.math.Vector2
-import com.tehreh1uneh.littlesubmarineadventure.engine.sprites.Rect
+import com.tehreh1uneh.littlesubmarineadventure.engine.Math.Rect
 
 internal fun Matrix3.toTransformationMatrix(srcRect: Rect, dstRect: Rect) {
     idt()

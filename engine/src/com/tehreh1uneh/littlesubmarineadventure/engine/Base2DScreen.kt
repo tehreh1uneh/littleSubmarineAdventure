@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.math.Matrix3
 import com.badlogic.gdx.math.Matrix4
 import com.badlogic.gdx.math.Vector2
-import com.tehreh1uneh.littlesubmarineadventure.engine.sprites.Rect
+import com.tehreh1uneh.littlesubmarineadventure.engine.Math.Rect
 import com.tehreh1uneh.littlesubmarineadventure.engine.utils.timesAssign
 import com.tehreh1uneh.littlesubmarineadventure.engine.utils.toTransformationMatrix
 

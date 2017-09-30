@@ -9,10 +9,10 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.math.Vector2
 import com.tehreh1uneh.littlesubmarineadventure.common.*
 import com.tehreh1uneh.littlesubmarineadventure.engine.Base2DScreen
+import com.tehreh1uneh.littlesubmarineadventure.engine.Math.Axis
+import com.tehreh1uneh.littlesubmarineadventure.engine.Math.Rect
 import com.tehreh1uneh.littlesubmarineadventure.engine.Sprite2DTexture
-import com.tehreh1uneh.littlesubmarineadventure.engine.sprites.Axis
 import com.tehreh1uneh.littlesubmarineadventure.engine.sprites.OnTouchScalingButton
-import com.tehreh1uneh.littlesubmarineadventure.engine.sprites.Rect
 import com.tehreh1uneh.littlesubmarineadventure.engine.ui.TouchListener
 import com.tehreh1uneh.littlesubmarineadventure.screens.game_screen.GameScreen
 
@@ -26,7 +26,7 @@ private const val V_BUBBLE_MAX = 0.1f
 class MenuScreen(game: Game) : Base2DScreen(game), TouchListener {
 
     private val backgroundTextures: Array<Texture> = Array(4) { Sprite2DTexture(PATH_BACKGROUND_MASK.replace("%", it.toString())) }
-    private val background = MenuBackground(TextureRegion(backgroundTextures[0]), TextureRegion(backgroundTextures[1]), TextureRegion(backgroundTextures[2]), TextureRegion(backgroundTextures[3]))
+    private val background = Background(TextureRegion(backgroundTextures[0]), TextureRegion(backgroundTextures[1]), TextureRegion(backgroundTextures[2]), TextureRegion(backgroundTextures[3]))
 
     private val menuAtlas = TextureAtlas(PATH_MENU_ATLAS)
 

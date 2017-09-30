@@ -2,9 +2,9 @@ package com.tehreh1uneh.littlesubmarineadventure.screens.menu_screen
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.tehreh1uneh.littlesubmarineadventure.common.evalRandomFloat
-import com.tehreh1uneh.littlesubmarineadventure.engine.sprites.Axis
-import com.tehreh1uneh.littlesubmarineadventure.engine.sprites.OnTouchMovingSprite
-import com.tehreh1uneh.littlesubmarineadventure.engine.sprites.Rect
+import com.tehreh1uneh.littlesubmarineadventure.engine.Math.Axis
+import com.tehreh1uneh.littlesubmarineadventure.engine.Math.Rect
+import com.tehreh1uneh.littlesubmarineadventure.engine.sprites.TouchSprite
 
 private const val BUBBLE_SIZE_MIN = 0.02f
 private const val BUBBLE_SIZE_MAX = 0.05f
@@ -20,7 +20,7 @@ class Bubble(
         axis: Axis,
         moveDirection: Axis,
         sizeToSpeedRatio: Float = SIZE_TO_SPEED_RATIO_DEFAULT)
-    : OnTouchMovingSprite(
+    : TouchSprite(
         region,
         axis = axis,
         moveDirection = moveDirection,

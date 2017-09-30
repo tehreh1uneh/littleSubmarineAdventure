@@ -1,9 +1,9 @@
 import com.badlogic.gdx.math.Vector2
-import com.tehreh1uneh.littlesubmarineadventure.engine.sprites.Rect
+import com.tehreh1uneh.littlesubmarineadventure.engine.Math.Rect
 import org.junit.Assert
 import org.junit.Test
 
-class RectTestBorders() {
+class RectTestBorders {
 
     @Test
     fun rectTestIsOutside(){
