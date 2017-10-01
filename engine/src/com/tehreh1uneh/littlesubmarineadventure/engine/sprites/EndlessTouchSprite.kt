@@ -3,21 +3,21 @@ package com.tehreh1uneh.littlesubmarineadventure.engine.sprites
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.math.Vector2
-import com.tehreh1uneh.littlesubmarineadventure.engine.Math.Axis
-import com.tehreh1uneh.littlesubmarineadventure.engine.Math.Rect
+import com.tehreh1uneh.littlesubmarineadventure.engine.math.Axis
+import com.tehreh1uneh.littlesubmarineadventure.engine.math.Rect
+import com.tehreh1uneh.littlesubmarineadventure.engine.utils.CORRECTION_BORDER_OFFSET
 
-private const val CORRECTION_BORDER_OFFSET = 0.001f
+class EndlessTouchSprite(region: TextureRegion, vX: Float, vY: Float, reactionAxis: Axis = Axis.X) : SpriteBehaviour {
 
-class EndlessTouchSprite(region: TextureRegion, vX: Float, vY: Float, axis: Axis = Axis.X, moveDirection: Axis = Axis.NONE) : SpriteBehaviour {
-
-    private val mainSprite = TouchSprite(region, vX = vX, vY = vY, axis = axis, moveDirection = moveDirection)
-    private val additionalSprite = TouchSprite(region, vX = vX, vY = vY, axis = axis, moveDirection = moveDirection)
+    private val mainSprite = TouchSprite(region, vX = vX, vY = vY, reactionAxis = reactionAxis)
+    private val additionalSprite = TouchSprite(region, vX = vX, vY = vY, reactionAxis = reactionAxis)
     private val worldBounds: Rect = Rect()
-
-    fun setVMoveCoefficient(vMoveCoefficient: Float) {
-        mainSprite.vMoveCoefficient = vMoveCoefficient
-        additionalSprite.vMoveCoefficient = vMoveCoefficient
-    }
+    var vMoveCoefficient: Float
+        get() = mainSprite.vMoveCoefficient
+        set(value) {
+            mainSprite.vMoveCoefficient = value
+            additionalSprite.vMoveCoefficient = value
+        }
 
     override fun resize(worldBounds: Rect) {
         this.worldBounds.set(worldBounds)

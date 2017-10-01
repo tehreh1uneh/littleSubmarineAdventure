@@ -1,4 +1,4 @@
-package com.tehreh1uneh.littlesubmarineadventure.engine.Math
+package com.tehreh1uneh.littlesubmarineadventure.engine.math
 
 import com.badlogic.gdx.math.Vector2
 

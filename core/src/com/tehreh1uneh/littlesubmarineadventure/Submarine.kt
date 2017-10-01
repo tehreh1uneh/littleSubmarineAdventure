@@ -2,7 +2,7 @@ package com.tehreh1uneh.littlesubmarineadventure
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.math.Vector2
-import com.tehreh1uneh.littlesubmarineadventure.engine.Math.Rect
+import com.tehreh1uneh.littlesubmarineadventure.engine.math.Rect
 import com.tehreh1uneh.littlesubmarineadventure.engine.sprites.Sprite
 
 private const val SIZE = 0.1f
@@ -21,7 +21,6 @@ class Submarine(region: TextureRegion) : Sprite(region) {
 
     private var pointer: Int? = null
     private var pressed: Boolean = false
-    private val v = Vector2()
     private var interval: Float = 0f
     private val worldBounds = Rect()
 
@@ -36,8 +35,8 @@ class Submarine(region: TextureRegion) : Sprite(region) {
         if (interval > SPEEDUP_INTERVAL) {
             interval = 0f
 
-            if (pressed && v.y < V_ASCENT_MAX || v.y < V_FALL_MAX) {
-                v.y *= COMMON_RATIO
+            if (pressed && vY < V_ASCENT_MAX || vX < V_FALL_MAX) {
+                vY *= COMMON_RATIO
             }
         }
         if (bottom < worldBounds.bottom) {
@@ -47,20 +46,20 @@ class Submarine(region: TextureRegion) : Sprite(region) {
             top = worldBounds.top
             if (pressed) v.setZero()
         }
-        centerPos.mulAdd(v, delta)
+        super.update(delta)
     }
 
     override fun touchDown(touch: Vector2, pointer: Int) {
         if (this.pointer != null) return
         this.pointer = pointer
-        v.y = V_ASCENT_MIN
+        vY = V_ASCENT_MIN
         pressed = true
     }
 
     override fun touchUp(touch: Vector2, pointer: Int) {
         if (pointer != this.pointer) return
         this.pointer = null
-        v.y = -V_FALL_MIN
+        vY = -V_FALL_MIN
         pressed = false
     }
 }

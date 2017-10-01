@@ -8,12 +8,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.math.Matrix3
 import com.badlogic.gdx.math.Matrix4
 import com.badlogic.gdx.math.Vector2
-import com.tehreh1uneh.littlesubmarineadventure.engine.Math.Rect
+import com.tehreh1uneh.littlesubmarineadventure.engine.math.Rect
+import com.tehreh1uneh.littlesubmarineadventure.engine.utils.WORLD_WIDTH
 import com.tehreh1uneh.littlesubmarineadventure.engine.utils.timesAssign
 import com.tehreh1uneh.littlesubmarineadventure.engine.utils.toTransformationMatrix
-
-const val WORLD_WIDTH = 1f
-private val glBounds = Rect(halfWidth = 1f, halfHeight = 1f)
 
 open class Base2DScreen(protected val game: Game) : Screen, InputProcessor {
 
@@ -21,6 +19,7 @@ open class Base2DScreen(protected val game: Game) : Screen, InputProcessor {
     private val worldBounds = Rect()
     private val matrixScreenToWorld = Matrix3()
     private val matrixWorldToGl = Matrix4()
+    private val glBounds = Rect(halfWidth = 1f, halfHeight = 1f)
     protected var batch = SpriteBatch()
 
     //region ScreenInterfaceMethods

@@ -1,31 +1,26 @@
-package com.tehreh1uneh.littlesubmarineadventure.screens.game_screen
+package com.tehreh1uneh.littlesubmarineadventure.screens.gamescreen
 
 import com.badlogic.gdx.Game
-import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
-import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.math.Vector2
 import com.tehreh1uneh.littlesubmarineadventure.Submarine
 import com.tehreh1uneh.littlesubmarineadventure.common.Background
-import com.tehreh1uneh.littlesubmarineadventure.common.PATH_BACKGROUND_MASK
 import com.tehreh1uneh.littlesubmarineadventure.common.PATH_GAME_ATLAS
+import com.tehreh1uneh.littlesubmarineadventure.common.getBgTextures
+import com.tehreh1uneh.littlesubmarineadventure.common.toTextureRegion
 import com.tehreh1uneh.littlesubmarineadventure.engine.Base2DScreen
-import com.tehreh1uneh.littlesubmarineadventure.engine.Math.Axis
-import com.tehreh1uneh.littlesubmarineadventure.engine.Math.Rect
-import com.tehreh1uneh.littlesubmarineadventure.engine.Sprite2DTexture
+import com.tehreh1uneh.littlesubmarineadventure.engine.math.Rect
 
 class GameScreen(game: Game) : Base2DScreen(game) {
 
-    private val backgroundTextures: Array<Texture> = Array(4) { Sprite2DTexture(PATH_BACKGROUND_MASK.replace("%", it.toString())) }
-    private val background = Background(TextureRegion(backgroundTextures[0]), TextureRegion(backgroundTextures[1]), TextureRegion(backgroundTextures[2]), TextureRegion(backgroundTextures[3]), vX = -0.05f, moveDirection = Axis.X)
+    private val backgroundTextures = getBgTextures()
+    private val background = Background(*backgroundTextures.toTextureRegion())
+
+    //TODO initialize background speed
 
     private val atlas = TextureAtlas(PATH_GAME_ATLAS)
 
     private val submarine = Submarine(atlas.findRegion("submarine"))
-
-    override fun show() {
-        super.show()
-    }
 
     override fun resize(worldBounds: Rect) {
         background.resize(worldBounds)

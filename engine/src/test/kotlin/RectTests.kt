@@ -1,5 +1,5 @@
 import com.badlogic.gdx.math.Vector2
-import com.tehreh1uneh.littlesubmarineadventure.engine.Math.Rect
+import com.tehreh1uneh.littlesubmarineadventure.engine.math.Rect
 import org.junit.Assert
 import org.junit.Test
 

@@ -1,29 +1,24 @@
-package com.tehreh1uneh.littlesubmarineadventure.screens.menu_screen
+package com.tehreh1uneh.littlesubmarineadventure.screens.menuscreen
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.tehreh1uneh.littlesubmarineadventure.common.evalRandomFloat
-import com.tehreh1uneh.littlesubmarineadventure.engine.Math.Axis
-import com.tehreh1uneh.littlesubmarineadventure.engine.Math.Rect
+import com.tehreh1uneh.littlesubmarineadventure.engine.math.Axis
+import com.tehreh1uneh.littlesubmarineadventure.engine.math.Rect
 import com.tehreh1uneh.littlesubmarineadventure.engine.sprites.TouchSprite
 
 private const val BUBBLE_SIZE_MIN = 0.02f
 private const val BUBBLE_SIZE_MAX = 0.05f
-private const val SIZE_TO_SPEED_RATIO_DEFAULT = 1f
-private const val V_ZERO = 0f
-
 
 class Bubble(
         region: TextureRegion,
         size: Float = evalRandomFloat(BUBBLE_SIZE_MIN, BUBBLE_SIZE_MAX),
-        vX: Float = V_ZERO,
-        vY: Float = V_ZERO,
-        axis: Axis,
-        moveDirection: Axis,
-        sizeToSpeedRatio: Float = SIZE_TO_SPEED_RATIO_DEFAULT)
+        vX: Float = 0f,
+        vY: Float = 0f,
+        reactionAxis: Axis,
+        sizeToSpeedRatio: Float = 1f)
     : TouchSprite(
         region,
-        axis = axis,
-        moveDirection = moveDirection,
+        reactionAxis = reactionAxis,
         vX = vX,
         vY = vY) {
 
@@ -31,13 +26,6 @@ class Bubble(
         setWidthProportion(size)
         v.scl(sizeToSpeedRatio)
     }
-
-    constructor(region: TextureRegion,
-                size: Float = evalRandomFloat(BUBBLE_SIZE_MIN, BUBBLE_SIZE_MAX),
-                vBoth: Float = V_ZERO,
-                axis: Axis,
-                moveDirection: Axis,
-                sizeToSpeedRatio: Float = SIZE_TO_SPEED_RATIO_DEFAULT) : this(region, size, vBoth, vBoth, axis, moveDirection, sizeToSpeedRatio)
 
     private lateinit var worldBounds: Rect
 

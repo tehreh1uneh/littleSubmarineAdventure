@@ -1,20 +1,17 @@
-package com.tehreh1uneh.littlesubmarineadventure.screens.menu_screen
+package com.tehreh1uneh.littlesubmarineadventure.screens.menuscreen
 
 import com.badlogic.gdx.Game
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.audio.Music
-import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
-import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.math.Vector2
 import com.tehreh1uneh.littlesubmarineadventure.common.*
 import com.tehreh1uneh.littlesubmarineadventure.engine.Base2DScreen
-import com.tehreh1uneh.littlesubmarineadventure.engine.Math.Axis
-import com.tehreh1uneh.littlesubmarineadventure.engine.Math.Rect
-import com.tehreh1uneh.littlesubmarineadventure.engine.Sprite2DTexture
+import com.tehreh1uneh.littlesubmarineadventure.engine.math.Axis
+import com.tehreh1uneh.littlesubmarineadventure.engine.math.Rect
 import com.tehreh1uneh.littlesubmarineadventure.engine.sprites.OnTouchScalingButton
 import com.tehreh1uneh.littlesubmarineadventure.engine.ui.TouchListener
-import com.tehreh1uneh.littlesubmarineadventure.screens.game_screen.GameScreen
+import com.tehreh1uneh.littlesubmarineadventure.screens.gamescreen.GameScreen
 
 private const val BUTTON_WIDTH = 0.1f
 private const val BUTTON_SCALE = 0.9f
@@ -22,18 +19,17 @@ private const val BUBBLES_AMOUNT = 30
 private const val V_BUBBLE_MIN = 0.05f
 private const val V_BUBBLE_MAX = 0.1f
 
-
 class MenuScreen(game: Game) : Base2DScreen(game), TouchListener {
 
-    private val backgroundTextures: Array<Texture> = Array(4) { Sprite2DTexture(PATH_BACKGROUND_MASK.replace("%", it.toString())) }
-    private val background = Background(TextureRegion(backgroundTextures[0]), TextureRegion(backgroundTextures[1]), TextureRegion(backgroundTextures[2]), TextureRegion(backgroundTextures[3]))
+    private val backgroundTextures = getBgTextures()
+    private val background = Background(*backgroundTextures.toTextureRegion(), vX = 0f, vY = 0f)
 
     private val menuAtlas = TextureAtlas(PATH_MENU_ATLAS)
 
     private val startButton = OnTouchScalingButton(menuAtlas.findRegion("button_start_game"), touchListener = this, scale = BUTTON_SCALE)
 
     private val bubbles: Array<Bubble> = Array(BUBBLES_AMOUNT) {
-        Bubble(menuAtlas.findRegion("bubble(${evalRandomFloat(1f, 4f).toInt()})"), vBoth = evalRandomFloat(V_BUBBLE_MIN, V_BUBBLE_MAX), axis = Axis.X, moveDirection = Axis.Y)
+        Bubble(menuAtlas.findRegion("bubble(${evalRandomFloat(1f, 4f).toInt()})"), vY = evalRandomFloat(V_BUBBLE_MIN, V_BUBBLE_MAX), reactionAxis = Axis.X)
     }
 
     private lateinit var mainMusic: Music
@@ -77,14 +73,6 @@ class MenuScreen(game: Game) : Base2DScreen(game), TouchListener {
         background.draw(batch)
         bubbles.forEach { it.draw(batch) }
         startButton.draw(batch)
-    }
-
-    override fun pause() {
-        super.pause()
-    }
-
-    override fun resume() {
-        super.resume()
     }
 
     override fun hide() {

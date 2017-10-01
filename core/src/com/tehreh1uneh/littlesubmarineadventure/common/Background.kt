@@ -3,22 +3,20 @@ package com.tehreh1uneh.littlesubmarineadventure.common
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.math.Vector2
-import com.tehreh1uneh.littlesubmarineadventure.engine.Math.Axis
-import com.tehreh1uneh.littlesubmarineadventure.engine.Math.Rect
+import com.tehreh1uneh.littlesubmarineadventure.engine.math.Rect
 import com.tehreh1uneh.littlesubmarineadventure.engine.sprites.EndlessTouchSprite
 import com.tehreh1uneh.littlesubmarineadventure.engine.sprites.SpriteBehaviour
 
 private const val V_BASE = 0.02f
 private const val V_STEP = 0.02f
 
-class Background(vararg region: TextureRegion, vX: Float = 0f, vY: Float = 0f, moveDirection: Axis = Axis.NONE) : SpriteBehaviour {
+class Background(vararg region: TextureRegion, vX: Float = 0f, vY: Float = 0f) : SpriteBehaviour {
 
-    private val regions: Array<out TextureRegion> = region
-    private val sprites: Array<EndlessTouchSprite> = Array(regions.size) { EndlessTouchSprite(regions[it], vX = vX - V_STEP * it, vY = vY - V_STEP * it, moveDirection = moveDirection) }
+    private val sprites: Array<EndlessTouchSprite> = Array(region.size) { EndlessTouchSprite(region[it], vX = vX, vY = vY) }
 
     init {
         for (i in 0 until sprites.lastIndex) {
-            sprites[i].setVMoveCoefficient(V_BASE + V_STEP * i)
+            sprites[i].vMoveCoefficient = V_BASE + V_STEP * i
         }
     }
 

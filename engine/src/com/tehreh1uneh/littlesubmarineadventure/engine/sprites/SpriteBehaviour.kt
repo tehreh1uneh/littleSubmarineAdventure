@@ -2,7 +2,7 @@ package com.tehreh1uneh.littlesubmarineadventure.engine.sprites
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.math.Vector2
-import com.tehreh1uneh.littlesubmarineadventure.engine.Math.Rect
+import com.tehreh1uneh.littlesubmarineadventure.engine.math.Rect
 
 interface SpriteBehaviour {
 

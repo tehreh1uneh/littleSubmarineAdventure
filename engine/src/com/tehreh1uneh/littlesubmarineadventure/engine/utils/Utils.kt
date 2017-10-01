@@ -4,7 +4,10 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.math.Matrix3
 import com.badlogic.gdx.math.Matrix4
 import com.badlogic.gdx.math.Vector2
-import com.tehreh1uneh.littlesubmarineadventure.engine.Math.Rect
+import com.tehreh1uneh.littlesubmarineadventure.engine.math.Rect
+
+internal const val CORRECTION_BORDER_OFFSET = 0.001f
+const val WORLD_WIDTH = 1f
 
 internal fun Matrix3.toTransformationMatrix(srcRect: Rect, dstRect: Rect) {
     idt()
