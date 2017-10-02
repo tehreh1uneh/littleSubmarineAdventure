@@ -6,12 +6,9 @@ import com.tehreh1uneh.littlesubmarineadventure.engine.math.Axis
 import com.tehreh1uneh.littlesubmarineadventure.engine.math.Rect
 import com.tehreh1uneh.littlesubmarineadventure.engine.sprites.TouchSprite
 
-private const val BUBBLE_SIZE_MIN = 0.02f
-private const val BUBBLE_SIZE_MAX = 0.05f
-
 class Bubble(
         region: TextureRegion,
-        size: Float = evalRandomFloat(BUBBLE_SIZE_MIN, BUBBLE_SIZE_MAX),
+        size: Float = evalRandomFloat(0.02f, 0.05f),
         vX: Float = 0f,
         vY: Float = 0f,
         reactionAxis: Axis,

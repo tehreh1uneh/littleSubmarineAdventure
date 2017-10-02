@@ -5,28 +5,28 @@ filter: MipMapLinearNearest,Linear
 repeat: none
 submarine
   rotate: false
-  xy: 4, 4
+  xy: 4, 9
   size: 301, 221
   orig: 301, 221
   offset: 0, 0
   index: -1
 trap(0)
   rotate: false
-  xy: 313, 175
-  size: 226, 50
-  orig: 226, 50
+  xy: 313, 4
+  size: 50, 226
+  orig: 50, 226
   offset: 0, 0
   index: -1
 trap(1)
   rotate: false
-  xy: 313, 117
-  size: 226, 50
-  orig: 226, 50
+  xy: 371, 4
+  size: 50, 226
+  orig: 50, 226
   offset: 0, 0
   index: -1
 button_restart_game
   rotate: false
-  xy: 547, 114
+  xy: 429, 119
   size: 104, 111
   orig: 104, 111
   offset: 0, 0

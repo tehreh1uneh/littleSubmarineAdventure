@@ -12,12 +12,17 @@ private const val V_STEP = 0.02f
 
 class Background(vararg region: TextureRegion, vX: Float = 0f, vY: Float = 0f) : SpriteBehaviour {
 
-    private val sprites: Array<EndlessTouchSprite> = Array(region.size) { EndlessTouchSprite(region[it], vX = vX, vY = vY) }
+    val sprites: Array<EndlessTouchSprite> = Array(region.size) { EndlessTouchSprite(region[it], vX = vX, vY = vY) }
 
     init {
         for (i in 0 until sprites.lastIndex) {
-            sprites[i].vMoveCoefficient = V_BASE + V_STEP * i
+            sprites[i].mainSprite.vMoveCoefficient = V_BASE + V_STEP * i
+            sprites[i].additionalSprite.vMoveCoefficient = V_BASE + V_STEP * i
         }
+    }
+
+    inline fun spriteActions(action: (sprite: EndlessTouchSprite) -> Unit) {
+        sprites.forEach { action(it) }
     }
 
     override fun resize(worldBounds: Rect) {

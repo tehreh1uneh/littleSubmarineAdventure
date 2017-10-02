@@ -9,15 +9,9 @@ import com.tehreh1uneh.littlesubmarineadventure.engine.utils.CORRECTION_BORDER_O
 
 class EndlessTouchSprite(region: TextureRegion, vX: Float, vY: Float, reactionAxis: Axis = Axis.X) : SpriteBehaviour {
 
-    private val mainSprite = TouchSprite(region, vX = vX, vY = vY, reactionAxis = reactionAxis)
-    private val additionalSprite = TouchSprite(region, vX = vX, vY = vY, reactionAxis = reactionAxis)
+    val mainSprite = TouchSprite(region, vX = vX, vY = vY, reactionAxis = reactionAxis)
+    val additionalSprite = TouchSprite(region, vX = vX, vY = vY, reactionAxis = reactionAxis)
     private val worldBounds: Rect = Rect()
-    var vMoveCoefficient: Float
-        get() = mainSprite.vMoveCoefficient
-        set(value) {
-            mainSprite.vMoveCoefficient = value
-            additionalSprite.vMoveCoefficient = value
-        }
 
     override fun resize(worldBounds: Rect) {
         this.worldBounds.set(worldBounds)

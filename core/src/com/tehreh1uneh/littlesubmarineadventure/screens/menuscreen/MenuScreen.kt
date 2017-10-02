@@ -1,11 +1,10 @@
 package com.tehreh1uneh.littlesubmarineadventure.screens.menuscreen
 
 import com.badlogic.gdx.Game
-import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.audio.Music
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.math.Vector2
 import com.tehreh1uneh.littlesubmarineadventure.common.*
+import com.tehreh1uneh.littlesubmarineadventure.engine.Audio
 import com.tehreh1uneh.littlesubmarineadventure.engine.Base2DScreen
 import com.tehreh1uneh.littlesubmarineadventure.engine.math.Axis
 import com.tehreh1uneh.littlesubmarineadventure.engine.math.Rect
@@ -32,19 +31,15 @@ class MenuScreen(game: Game) : Base2DScreen(game), TouchListener {
         Bubble(menuAtlas.findRegion("bubble(${evalRandomFloat(1f, 4f).toInt()})"), vY = evalRandomFloat(V_BUBBLE_MIN, V_BUBBLE_MAX), reactionAxis = Axis.X)
     }
 
-    private lateinit var mainMusic: Music
+//    private lateinit var mainMusic: Music
 
     //region ScreenEvents
 
     override fun show() {
         super.show()
         startButton.setWidthProportion(BUTTON_WIDTH)
-        if (playMusic) {
-            mainMusic = Gdx.audio.newMusic(Gdx.files.internal(PATH_MAIN_MUSIC))
-            mainMusic.isLooping = true
-            mainMusic.volume = 0.2f
-            mainMusic.play()
-        }
+        Audio.musicVolume = 0.2f
+        Audio.play()
     }
 
     override fun resize(worldBounds: Rect) {
@@ -82,7 +77,7 @@ class MenuScreen(game: Game) : Base2DScreen(game), TouchListener {
     override fun dispose() {
         backgroundTextures.forEach { it.dispose() }
         menuAtlas.dispose()
-        mainMusic.dispose()
+        Audio.dispose()
 
         super.dispose()
     }
