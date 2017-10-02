@@ -6,9 +6,6 @@ import com.badlogic.gdx.math.Matrix4
 import com.badlogic.gdx.math.Vector2
 import com.tehreh1uneh.littlesubmarineadventure.engine.math.Rect
 
-internal const val PATH_MAIN_MUSIC = "sounds/DST-WaterLily.mp3"
-
-
 internal const val CORRECTION_BORDER_OFFSET = 0.001f
 const val WORLD_WIDTH = 1f
 

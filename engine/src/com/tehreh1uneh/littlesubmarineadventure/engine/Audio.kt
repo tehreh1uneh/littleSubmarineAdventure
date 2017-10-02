@@ -2,13 +2,12 @@ package com.tehreh1uneh.littlesubmarineadventure.engine
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.audio.Music
-import com.tehreh1uneh.littlesubmarineadventure.engine.utils.PATH_MAIN_MUSIC
 import com.tehreh1uneh.littlesubmarineadventure.engine.utils.playMusic
 import com.tehreh1uneh.littlesubmarineadventure.engine.utils.playSounds
 
 object Audio {
 
-    private var music: Music = Gdx.audio.newMusic(Gdx.files.internal(PATH_MAIN_MUSIC))
+    private lateinit var music: Music
 
     var musicVolume: Float
         set(value) {
@@ -16,21 +15,22 @@ object Audio {
         }
         get() = music.volume
 
-
-    init {
-        music.isLooping = true
-        musicVolume = 1f
+    fun setMusic(path: String, looping: Boolean = true) {
+        music = Gdx.audio.newMusic(Gdx.files.internal(path))
+        music.isLooping = looping
     }
 
     fun turnAudio(musicOn: Boolean = false, soundsOn: Boolean = false) {
         playMusic = musicOn
         playSounds = soundsOn
+
+        play()
     }
 
     fun play() {
         if (playMusic) {
             music.play()
-        } else {
+        } else if (music.isPlaying) {
             music.stop()
         }
     }

@@ -31,13 +31,12 @@ class MenuScreen(game: Game) : Base2DScreen(game), TouchListener {
         Bubble(menuAtlas.findRegion("bubble(${evalRandomFloat(1f, 4f).toInt()})"), vY = evalRandomFloat(V_BUBBLE_MIN, V_BUBBLE_MAX), reactionAxis = Axis.X)
     }
 
-//    private lateinit var mainMusic: Music
-
     //region ScreenEvents
 
     override fun show() {
         super.show()
         startButton.setWidthProportion(BUTTON_WIDTH)
+        Audio.setMusic(PATH_MAIN_MUSIC)
         Audio.musicVolume = 0.2f
         Audio.play()
     }
