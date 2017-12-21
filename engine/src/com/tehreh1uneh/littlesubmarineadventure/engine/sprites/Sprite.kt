@@ -5,15 +5,16 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.math.Vector2
 import com.tehreh1uneh.littlesubmarineadventure.engine.math.Rect
 
-open class Sprite(vararg region: TextureRegion, vX: Float = 0f, vY: Float = 0f) : Rect(), SpriteBehaviour {
+open class Sprite(vararg region: TextureRegion, vX: Float = 0f, vY: Float = 0f) : Rect(), SpriteBehaviour, Resizable {
 
     protected var regions: Array<out TextureRegion> = region
     protected var frame = 0
-    var scaleX = 1f
-    var scaleY = 1f
-    var rotation = 0f
-    var originX = halfWidth
-    var originY = halfHeight
+    private var scaleX = 1f
+    private var scaleY = 1f
+    private var rotation = 0f
+    private var originX = halfWidth
+    private var originY = halfHeight
+    private var destroyed = false
 
     val v = Vector2()
     var vX: Float
@@ -40,19 +41,21 @@ open class Sprite(vararg region: TextureRegion, vX: Float = 0f, vY: Float = 0f) 
         batch.draw(regions[frame], left, bottom, originX, originY, width, height, scaleX, scaleY, rotation)
     }
 
-    fun setWidthProportion(width: Float = 1f) {
+    override fun setWidthProportion(width: Float) {
         val ratio: Float = (regions[frame].regionWidth / regions[frame].regionHeight.toFloat())
         setSize(width, height = width / ratio)
     }
 
-    fun setHeightProportion(height: Float = 1f) {
+    override fun setHeightProportion(height: Float) {
         val ratio: Float = (regions[frame].regionHeight / regions[frame].regionWidth.toFloat())
         setSize(height / ratio, height)
     }
 
-    fun setScale(scale: Float = 1f) {
+    override fun setScale(scale: Float) {
         scaleX = scale
         scaleY = scale
     }
+
+
 }
 

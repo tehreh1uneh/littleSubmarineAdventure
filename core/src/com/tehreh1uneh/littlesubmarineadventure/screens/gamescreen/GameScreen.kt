@@ -3,12 +3,10 @@ package com.tehreh1uneh.littlesubmarineadventure.screens.gamescreen
 import com.badlogic.gdx.Game
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.math.Vector2
-import com.tehreh1uneh.littlesubmarineadventure.Enemies.Trap
 import com.tehreh1uneh.littlesubmarineadventure.Submarine
-import com.tehreh1uneh.littlesubmarineadventure.common.Background
-import com.tehreh1uneh.littlesubmarineadventure.common.PATH_GAME_ATLAS
-import com.tehreh1uneh.littlesubmarineadventure.common.getBgTextures
-import com.tehreh1uneh.littlesubmarineadventure.common.toTextureRegion
+import com.tehreh1uneh.littlesubmarineadventure.common.*
+import com.tehreh1uneh.littlesubmarineadventure.enemies.TRAP_HEIGHT_BASIC
+import com.tehreh1uneh.littlesubmarineadventure.enemies.TrapPool
 import com.tehreh1uneh.littlesubmarineadventure.engine.Audio
 import com.tehreh1uneh.littlesubmarineadventure.engine.Base2DScreen
 import com.tehreh1uneh.littlesubmarineadventure.engine.math.Rect
@@ -27,22 +25,25 @@ class GameScreen(game: Game) : Base2DScreen(game) {
     }
 
     private val atlas = TextureAtlas(PATH_GAME_ATLAS)
-    private val trap = Trap(atlas.findRegion("trap(0)"), atlas.findRegion("trap(1)"), vX = 0f, vY = 0f)
     private val submarine = Submarine(atlas.findRegion("submarine"))
-
+    private val trapPool = TrapPool(atlas)
 
     override fun show() {
         super.show()
         Audio.play()
+
+        for (i in 1..10) {
+            trapPool.get()
+        }
     }
 
     override fun resize(worldBounds: Rect) {
         background.resize(worldBounds)
 
-        trap.resize(worldBounds)
-        trap.setHeightProportion(worldBounds.height * 0.3f)
-
-        trap.centerPos.set(worldBounds.centerPos)
+        trapPool.worldBounds = worldBounds
+        trapPool.resize(worldBounds)
+        trapPool.setHeightProportion(worldBounds.height * TRAP_HEIGHT_BASIC)
+        trapPool.forEach { it.centerPos.set(evalRandomFloat(-worldBounds.halfWidth, worldBounds.halfWidth), evalRandomFloat(-worldBounds.halfHeight, worldBounds.halfHeight)) }
 
         submarine.resize(worldBounds)
     }
@@ -51,10 +52,11 @@ class GameScreen(game: Game) : Base2DScreen(game) {
         batch.begin()
 
         background.update(delta)
-        trap.update(delta)
 
+        trapPool.update(delta)
         background.draw(batch)
-        trap.draw(batch)
+
+        trapPool.draw(batch)
         submarine.update(delta)
         submarine.draw(batch)
 

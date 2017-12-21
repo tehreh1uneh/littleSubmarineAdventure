@@ -16,3 +16,4 @@ internal fun evalRandomFloat(min: Float = 0f, max: Float = 1f) = rndGen.nextFloa
 
 internal fun Array<Texture>.toTextureRegion(): Array<TextureRegion> = Array(this.size) { TextureRegion(this[it]) }
 internal fun getBgTextures(): Array<Texture> = Array(4) { Sprite2DTexture(PATH_BACKGROUND_MASK.replace("%", it.toString())) }
+

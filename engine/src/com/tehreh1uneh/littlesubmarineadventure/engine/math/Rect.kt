@@ -2,7 +2,7 @@ package com.tehreh1uneh.littlesubmarineadventure.engine.math
 
 import com.badlogic.gdx.math.Vector2
 
-open class Rect(x: Float = 0f, y: Float = 0f, protected var halfWidth: Float = 0f, protected var halfHeight: Float = 0f) {
+open class Rect(x: Float = 0f, y: Float = 0f, var halfWidth: Float = 0f, var halfHeight: Float = 0f) {
 
     val centerPos = Vector2()
 
