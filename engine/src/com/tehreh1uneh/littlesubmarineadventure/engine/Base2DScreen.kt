@@ -16,7 +16,7 @@ import com.tehreh1uneh.littlesubmarineadventure.engine.utils.toTransformationMat
 open class Base2DScreen(protected val game: Game) : Screen, InputProcessor {
 
     private val screenBounds = Rect()
-    private val worldBounds = Rect()
+    protected var worldBounds = Rect()
     private val matrixScreenToWorld = Matrix3()
     private val matrixWorldToGl = Matrix4()
     private val glBounds = Rect(halfWidth = 1f, halfHeight = 1f)

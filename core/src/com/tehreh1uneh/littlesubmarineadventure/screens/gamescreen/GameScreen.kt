@@ -4,8 +4,12 @@ import com.badlogic.gdx.Game
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.math.Vector2
 import com.tehreh1uneh.littlesubmarineadventure.Submarine
-import com.tehreh1uneh.littlesubmarineadventure.common.*
+import com.tehreh1uneh.littlesubmarineadventure.common.Background
+import com.tehreh1uneh.littlesubmarineadventure.common.PATH_GAME_ATLAS
+import com.tehreh1uneh.littlesubmarineadventure.common.getBgTextures
+import com.tehreh1uneh.littlesubmarineadventure.common.toTextureRegion
 import com.tehreh1uneh.littlesubmarineadventure.enemies.TRAP_HEIGHT_BASIC
+import com.tehreh1uneh.littlesubmarineadventure.enemies.TrapEmitter
 import com.tehreh1uneh.littlesubmarineadventure.enemies.TrapPool
 import com.tehreh1uneh.littlesubmarineadventure.engine.Audio
 import com.tehreh1uneh.littlesubmarineadventure.engine.Base2DScreen
@@ -27,23 +31,21 @@ class GameScreen(game: Game) : Base2DScreen(game) {
     private val atlas = TextureAtlas(PATH_GAME_ATLAS)
     private val submarine = Submarine(atlas.findRegion("submarine"))
     private val trapPool = TrapPool(atlas)
+    private val trapEmitter = TrapEmitter(trapPool, worldBounds)
 
     override fun show() {
         super.show()
         Audio.play()
-
-        for (i in 1..10) {
-            trapPool.get()
-        }
     }
 
     override fun resize(worldBounds: Rect) {
+
+        this.worldBounds = worldBounds
+
         background.resize(worldBounds)
 
-        trapPool.worldBounds = worldBounds
         trapPool.resize(worldBounds)
         trapPool.setHeightProportion(worldBounds.height * TRAP_HEIGHT_BASIC)
-        trapPool.forEach { it.centerPos.set(evalRandomFloat(-worldBounds.halfWidth, worldBounds.halfWidth), evalRandomFloat(-worldBounds.halfHeight, worldBounds.halfHeight)) }
 
         submarine.resize(worldBounds)
     }
@@ -52,6 +54,10 @@ class GameScreen(game: Game) : Base2DScreen(game) {
         batch.begin()
 
         background.update(delta)
+
+        checkScreenBounds()
+
+        trapEmitter.generateTrap(delta)
 
         trapPool.update(delta)
         background.draw(batch)
@@ -73,6 +79,16 @@ class GameScreen(game: Game) : Base2DScreen(game) {
         Audio.dispose()
 
         super.dispose()
+    }
+
+    fun checkScreenBounds() {
+        val traps = trapPool.active
+        traps.forEach {
+            if (!it.intersect(worldBounds)) {
+
+                // TODO mark active traps from the left side of world bounds as destroyed and remove (concurrency problems here)
+            }
+        }
     }
 
     override fun touchDown(touch: Vector2, pointer: Int) {

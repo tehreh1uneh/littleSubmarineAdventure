@@ -7,20 +7,22 @@ import com.tehreh1uneh.littlesubmarineadventure.engine.sprites.SpriteBehaviour
 
 abstract class SpritesPool<T> : SpriteBehaviour, Resizable  where T : SpriteBehaviour, T : Resizable {
 
-    protected val active: ArrayList<T> = arrayListOf()
-    protected val inactive: ArrayList<T> = arrayListOf()
+    val active: MutableList<T> = mutableListOf()
+    private val inactive: MutableList<T> = mutableListOf()
 
     protected abstract fun newElement(): T
 
     fun get(): T {
         val element = if (inactive.isEmpty()) newElement() else inactive.removeAt(inactive.lastIndex)
         active += element
+        println("active traps:${active.size} inactive traps: ${inactive.size}")
         return element
     }
 
     fun free(element: T) {
         if (!active.remove(element)) throw RuntimeException("Element does not exists in active elements")
         inactive += element
+        println("active traps:${active.size} inactive traps: ${inactive.size}")
     }
 
     fun freeAll() {
@@ -50,9 +52,5 @@ abstract class SpritesPool<T> : SpriteBehaviour, Resizable  where T : SpriteBeha
 
     override fun setScale(scale: Float) {
         active.forEach { it.setScale(scale) }
-    }
-
-    fun forEach(action: (T) -> Unit) {
-        active.forEach(action)
     }
 }
