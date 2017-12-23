@@ -13,6 +13,7 @@ private const val V_STEP = 0.02f
 class Background(vararg region: TextureRegion, vX: Float = 0f, vY: Float = 0f) : SpriteBehaviour {
 
     val sprites: Array<EndlessTouchSprite> = Array(region.size) { EndlessTouchSprite(region[it], vX = vX, vY = vY) }
+    override var destroyed = false
 
     init {
         for (i in 0 until sprites.lastIndex) {

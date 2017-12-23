@@ -14,7 +14,7 @@ open class Sprite(vararg region: TextureRegion, vX: Float = 0f, vY: Float = 0f) 
     private var rotation = 0f
     private var originX = halfWidth
     private var originY = halfHeight
-    private var destroyed = false
+    override var destroyed = false
 
     val v = Vector2()
     var vX: Float

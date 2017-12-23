@@ -12,6 +12,7 @@ class EndlessTouchSprite(region: TextureRegion, vX: Float, vY: Float, reactionAx
     val mainSprite = TouchSprite(region, vX = vX, vY = vY, reactionAxis = reactionAxis)
     val additionalSprite = TouchSprite(region, vX = vX, vY = vY, reactionAxis = reactionAxis)
     private val worldBounds: Rect = Rect()
+    override var destroyed = false
 
     override fun resize(worldBounds: Rect) {
         this.worldBounds.set(worldBounds)

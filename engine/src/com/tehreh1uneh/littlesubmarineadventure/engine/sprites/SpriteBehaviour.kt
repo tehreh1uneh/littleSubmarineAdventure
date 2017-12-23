@@ -6,6 +6,8 @@ import com.tehreh1uneh.littlesubmarineadventure.engine.math.Rect
 
 interface SpriteBehaviour {
 
+    var destroyed: Boolean
+
     fun resize(worldBounds: Rect) {}
     fun update(delta: Float) {}
     fun draw(batch: SpriteBatch) {}

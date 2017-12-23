@@ -66,6 +66,8 @@ class GameScreen(game: Game) : Base2DScreen(game) {
         submarine.update(delta)
         submarine.draw(batch)
 
+        deleteAllDestroyed()
+
         batch.end()
     }
 
@@ -81,14 +83,18 @@ class GameScreen(game: Game) : Base2DScreen(game) {
         super.dispose()
     }
 
-    fun checkScreenBounds() {
+    private fun checkScreenBounds() {
         val traps = trapPool.active
         traps.forEach {
-            if (!it.intersect(worldBounds)) {
-
+            if (it toTheLeftOf worldBounds) {
+                it.destroyed = true
                 // TODO mark active traps from the left side of world bounds as destroyed and remove (concurrency problems here)
             }
         }
+    }
+
+    private fun deleteAllDestroyed() {
+        trapPool.freeAllDestroyed()
     }
 
     override fun touchDown(touch: Vector2, pointer: Int) {

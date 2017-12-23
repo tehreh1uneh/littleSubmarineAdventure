@@ -5,10 +5,11 @@ import com.tehreh1uneh.littlesubmarineadventure.engine.math.Rect
 import com.tehreh1uneh.littlesubmarineadventure.engine.sprites.Resizable
 import com.tehreh1uneh.littlesubmarineadventure.engine.sprites.SpriteBehaviour
 
-abstract class SpritesPool<T> : SpriteBehaviour, Resizable  where T : SpriteBehaviour, T : Resizable {
+abstract class SpritesPool<T> : SpriteBehaviour, Resizable where T : SpriteBehaviour, T : Resizable {
 
     val active: MutableList<T> = mutableListOf()
     private val inactive: MutableList<T> = mutableListOf()
+    override var destroyed = false
 
     protected abstract fun newElement(): T
 
@@ -40,6 +41,19 @@ abstract class SpritesPool<T> : SpriteBehaviour, Resizable  where T : SpriteBeha
 
     override fun resize(worldBounds: Rect) {
         active.forEach { it.resize(worldBounds) }
+    }
+
+    fun freeAllDestroyed() {
+        var i = 0
+        while (i < active.size) {
+            val sprite = active[i]
+            if (sprite.destroyed) {
+                free(sprite)
+                i--
+                sprite.destroyed = false
+            }
+            i++
+        }
     }
 
     override fun setWidthProportion(width: Float) {
