@@ -31,7 +31,7 @@ class GameScreen(game: Game) : Base2DScreen(game) {
     private val atlas = TextureAtlas(PATH_GAME_ATLAS)
     private val submarine = Submarine(atlas.findRegion("submarine"))
     private val trapPool = TrapPool(atlas)
-    private val trapEmitter = TrapEmitter(trapPool, worldBounds)
+    private val trapEmitter = TrapEmitter(trapPool, worldBounds, submarine.height)
 
     override fun show() {
         super.show()
@@ -43,11 +43,11 @@ class GameScreen(game: Game) : Base2DScreen(game) {
         this.worldBounds = worldBounds
 
         background.resize(worldBounds)
-
         trapPool.resize(worldBounds)
         trapPool.setHeightProportion(worldBounds.height * TRAP_HEIGHT_BASIC)
-
         submarine.resize(worldBounds)
+
+        trapEmitter.resize(worldBounds, submarine.height)
     }
 
     override fun render(delta: Float) {
@@ -77,14 +77,14 @@ class GameScreen(game: Game) : Base2DScreen(game) {
 
     private fun update(delta: Float) {
         background.update(delta)
-        trapPool.update(delta)
         submarine.update(delta)
+        trapPool.update(delta)
     }
 
     private fun draw() {
         background.draw(batch)
-        trapPool.draw(batch)
         submarine.draw(batch)
+        trapPool.draw(batch)
     }
 
 
