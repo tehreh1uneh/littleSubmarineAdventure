@@ -27,7 +27,7 @@ class Submarine(region: TextureRegion) : Sprite(region) {
     override fun resize(worldBounds: Rect) {
         this.worldBounds.set(worldBounds)
         setWidthProportion(SIZE)
-        centerPos.set(worldBounds.left + width, worldBounds.centerPos.y)
+        centerPos.x = worldBounds.left + width
     }
 
     override fun update(delta: Float) {

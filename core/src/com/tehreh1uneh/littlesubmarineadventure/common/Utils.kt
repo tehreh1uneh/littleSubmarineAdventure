@@ -7,9 +7,11 @@ import java.util.*
 
 internal const val BACKGROUND_SPEED_BASE = 0.02f
 internal const val BACKGROUND_SPEED_STEP = 0.02f
+internal const val PATH_BACKGROUND_GREY = "textures/background/background_gray.png"
 internal const val PATH_BACKGROUND_MASK = "textures/background/background_(%).png"
 internal const val PATH_MENU_ATLAS = "textures/menu/atlas/atlas_menuScreen.pack"
 internal const val PATH_GAME_ATLAS = "textures/game/atlas/game_screen.pack"
+
 
 internal const val BUTTON_WIDTH = 0.1f
 internal const val BUTTON_SCALE = 0.9f

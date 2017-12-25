@@ -2,6 +2,7 @@ package com.tehreh1uneh.littlesubmarineadventure.screens.gamescreen
 
 import com.badlogic.gdx.Game
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
+import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.math.Vector2
 import com.tehreh1uneh.littlesubmarineadventure.Submarine
 import com.tehreh1uneh.littlesubmarineadventure.common.*
@@ -11,15 +12,16 @@ import com.tehreh1uneh.littlesubmarineadventure.enemies.TrapEmitter
 import com.tehreh1uneh.littlesubmarineadventure.enemies.TrapPool
 import com.tehreh1uneh.littlesubmarineadventure.engine.Audio
 import com.tehreh1uneh.littlesubmarineadventure.engine.Base2DScreen
+import com.tehreh1uneh.littlesubmarineadventure.engine.Sprite2DTexture
 import com.tehreh1uneh.littlesubmarineadventure.engine.math.Rect
 import com.tehreh1uneh.littlesubmarineadventure.engine.sprites.OnTouchScalingButton
+import com.tehreh1uneh.littlesubmarineadventure.engine.sprites.Sprite
 import com.tehreh1uneh.littlesubmarineadventure.engine.ui.TouchListener
 
 class GameScreen(game: Game) : Base2DScreen(game), TouchListener {
 
     private val backgroundTextures = getBgTextures()
     private val background = Background(*backgroundTextures.toTextureRegion())
-    private val restartButtonName = "button_restart_game"
     private var state = ObjectState.ACTIVE
 
     init {
@@ -28,9 +30,11 @@ class GameScreen(game: Game) : Base2DScreen(game), TouchListener {
 
     private val atlas = TextureAtlas(PATH_GAME_ATLAS)
     private val submarine = Submarine(atlas.findRegion("submarine"))
+    private val backgroundGreyTexture = Sprite2DTexture(PATH_BACKGROUND_GREY, false)
+    private val backgroundGrey = Sprite(TextureRegion(backgroundGreyTexture))
     private val trapPool = TrapPool(atlas)
     private val trapEmitter = TrapEmitter(trapPool, worldBounds, submarine.height)
-    private val buttonRestart = OnTouchScalingButton(atlas.findRegion(restartButtonName), touchListener = this, scale = BUTTON_SCALE)
+    private val buttonRestart = OnTouchScalingButton(atlas.findRegion("button_restart_game"), touchListener = this, scale = BUTTON_SCALE)
 
     override fun show() {
         super.show()
@@ -41,6 +45,8 @@ class GameScreen(game: Game) : Base2DScreen(game), TouchListener {
 
         this.worldBounds = worldBounds
 
+        backgroundGrey.resize(worldBounds)
+        backgroundGrey.setWidthProportion(worldBounds.width)
         background.resize(worldBounds)
         trapPool.resize(worldBounds)
         trapPool.setHeightProportion(worldBounds.height * TRAP_HEIGHT_BASIC)
@@ -72,6 +78,7 @@ class GameScreen(game: Game) : Base2DScreen(game), TouchListener {
 
     override fun dispose() {
         backgroundTextures.forEach { it.dispose() }
+        backgroundGreyTexture.dispose()
         atlas.dispose()
         Audio.dispose()
 
@@ -80,12 +87,12 @@ class GameScreen(game: Game) : Base2DScreen(game), TouchListener {
 
     private fun update(delta: Float) {
 
-        if (state == ObjectState.ACTIVE) {
-            trapEmitter.generateTrap(delta)
-        } else if (state == ObjectState.STOP) {
-            buttonRestart.update(delta)
-        } else {
-            RuntimeException("Unknown object state")
+        when (state) {
+            ObjectState.ACTIVE -> trapEmitter.generateTrap(delta)
+            ObjectState.STOP -> {
+                buttonRestart.update(delta)
+                backgroundGrey.update(delta)
+            }
         }
 
         background.update(delta)
@@ -99,6 +106,7 @@ class GameScreen(game: Game) : Base2DScreen(game), TouchListener {
         trapPool.draw(batch)
 
         if (state == ObjectState.STOP) {
+            backgroundGrey.draw(batch)
             buttonRestart.draw(batch)
         }
     }
@@ -131,19 +139,16 @@ class GameScreen(game: Game) : Base2DScreen(game), TouchListener {
     }
 
     override fun touchDown(touch: Vector2, pointer: Int) {
-
-        if (state == ObjectState.ACTIVE) {
-            submarine.touchDown(touch, pointer)
-        } else {
-            buttonRestart.touchDown(touch, pointer)
+        when (state) {
+            ObjectState.ACTIVE -> submarine.touchDown(touch, pointer)
+            ObjectState.STOP -> buttonRestart.touchDown(touch, pointer)
         }
     }
 
     override fun touchUp(touch: Vector2, pointer: Int) {
-        if (state == ObjectState.ACTIVE) {
-            submarine.touchUp(touch, pointer)
-        } else {
-            buttonRestart.touchUp(touch, pointer)
+        when (state) {
+            ObjectState.ACTIVE -> submarine.touchUp(touch, pointer)
+            ObjectState.STOP -> buttonRestart.touchUp(touch, pointer)
         }
     }
 
@@ -156,6 +161,7 @@ class GameScreen(game: Game) : Base2DScreen(game), TouchListener {
     private fun restartGame() {
         state = ObjectState.ACTIVE
         background.initSpeed()
+        submarine.centerPos.y = worldBounds.centerPos.y
 
         val traps = trapPool.active
         traps.forEach {

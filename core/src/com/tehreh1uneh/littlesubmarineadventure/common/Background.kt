@@ -10,7 +10,7 @@ import com.tehreh1uneh.littlesubmarineadventure.engine.sprites.SpriteBehaviour
 
 class Background(vararg region: TextureRegion, vX: Float = 0f, vY: Float = 0f) : SpriteBehaviour {
 
-    val sprites: Array<EndlessTouchSprite> = Array(region.size) { EndlessTouchSprite(region[it], vX = vX, vY = vY) }
+    private val sprites: Array<EndlessTouchSprite> = Array(region.size) { EndlessTouchSprite(region[it], vX = vX, vY = vY) }
     override var destroyed = false
 
     init {
@@ -18,10 +18,6 @@ class Background(vararg region: TextureRegion, vX: Float = 0f, vY: Float = 0f) :
             sprites[i].mainSprite.vMoveCoefficient = BACKGROUND_SPEED_BASE + BACKGROUND_SPEED_STEP * i
             sprites[i].additionalSprite.vMoveCoefficient = BACKGROUND_SPEED_BASE + BACKGROUND_SPEED_STEP * i
         }
-    }
-
-    inline fun spriteActions(action: (sprite: EndlessTouchSprite) -> Unit) {
-        sprites.forEach { action(it) }
     }
 
     override fun resize(worldBounds: Rect) {
@@ -59,9 +55,11 @@ class Background(vararg region: TextureRegion, vX: Float = 0f, vY: Float = 0f) :
 
     fun initSpeed() {
         var i = 0
-        spriteActions {
-            it.mainSprite.vX = -0.02f * i++ - 0.02f
-            it.additionalSprite.vX = -0.02f * i++ - 0.02f
+        sprites.forEach {
+            with(it) {
+                mainSprite.vX = -0.02f * i++ - 0.02f
+                additionalSprite.vX = -0.02f * i++ - 0.02f
+            }
         }
     }
 
