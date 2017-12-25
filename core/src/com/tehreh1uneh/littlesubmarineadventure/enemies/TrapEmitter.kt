@@ -8,7 +8,6 @@ class TrapEmitter(private val trapPool: TrapPool, private var worldBounds: Rect,
     private var trapGeneratorTimer = 0f
     private var trapGeneratorInterval = TRAP_GENERATOR_INTERVAL_BASIC
 
-
     fun generateTrap(delta: Float) {
         trapGeneratorTimer += delta
         if (trapGeneratorTimer < trapGeneratorInterval) return

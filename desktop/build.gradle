@@ -6,6 +6,11 @@ sourceSets.main.java.srcDirs = ["src/"]
 project.ext.mainClassName = "com.tehreh1uneh.littlesubmarineadventure.desktop.DesktopLauncherKt"
 project.ext.assetsDir = new File("../android/assets")
 
+jar {
+    manifest {}
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+}
+
 task run(dependsOn: classes, type: JavaExec) {
     main = project.mainClassName
     classpath = sourceSets.main.runtimeClasspath
@@ -52,9 +57,5 @@ task afterEclipseImport(description: "Post processing after project generation",
         printer.setPreserveWhitespace(true)
         printer.print(classpath)
     }
-
-    jar {
-        manifest {}
-        from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
-    }
 }
+

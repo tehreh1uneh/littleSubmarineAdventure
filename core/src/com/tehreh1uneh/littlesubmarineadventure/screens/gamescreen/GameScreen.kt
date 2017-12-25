@@ -4,10 +4,7 @@ import com.badlogic.gdx.Game
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.math.Vector2
 import com.tehreh1uneh.littlesubmarineadventure.Submarine
-import com.tehreh1uneh.littlesubmarineadventure.common.Background
-import com.tehreh1uneh.littlesubmarineadventure.common.PATH_GAME_ATLAS
-import com.tehreh1uneh.littlesubmarineadventure.common.getBgTextures
-import com.tehreh1uneh.littlesubmarineadventure.common.toTextureRegion
+import com.tehreh1uneh.littlesubmarineadventure.common.*
 import com.tehreh1uneh.littlesubmarineadventure.enemies.TRAP_HEIGHT_BASIC
 import com.tehreh1uneh.littlesubmarineadventure.enemies.TrapEmitter
 import com.tehreh1uneh.littlesubmarineadventure.enemies.TrapPool
@@ -19,6 +16,7 @@ class GameScreen(game: Game) : Base2DScreen(game) {
 
     private val backgroundTextures = getBgTextures()
     private val background = Background(*backgroundTextures.toTextureRegion())
+    private var state = ObjectState.ACTIVE
 
     init {
         var i = 0
@@ -53,12 +51,16 @@ class GameScreen(game: Game) : Base2DScreen(game) {
     override fun render(delta: Float) {
         batch.begin()
 
-        trapEmitter.generateTrap(delta)
+        if (state == ObjectState.ACTIVE) {
+            trapEmitter.generateTrap(delta)
+        }
 
         update(delta)
         draw()
-        checkCollisions()
-        deleteAllDestroyed()
+        if (state == ObjectState.ACTIVE) {
+            checkCollisions()
+            deleteAllDestroyed()
+        }
 
         batch.end()
     }
@@ -93,7 +95,21 @@ class GameScreen(game: Game) : Base2DScreen(game) {
         traps.forEach {
             if (it toTheLeftOf worldBounds) {
                 it.destroyed = true
+            } else if (it intersect submarine) {
+                stopGame()
+                return@forEach
             }
+        }
+    }
+
+    private fun stopGame() {
+        state = ObjectState.STOP
+
+        val traps = trapPool.active
+        traps.forEach {
+            it.v.setZero()
+            submarine.v.setZero()
+            background.stop()
         }
     }
 
@@ -102,10 +118,15 @@ class GameScreen(game: Game) : Base2DScreen(game) {
     }
 
     override fun touchDown(touch: Vector2, pointer: Int) {
-        submarine.touchDown(touch, pointer)
+
+        if (state == ObjectState.ACTIVE) {
+            submarine.touchDown(touch, pointer)
+        }
     }
 
     override fun touchUp(touch: Vector2, pointer: Int) {
-        submarine.touchUp(touch, pointer)
+        if (state == ObjectState.ACTIVE) {
+            submarine.touchUp(touch, pointer)
+        }
     }
 }

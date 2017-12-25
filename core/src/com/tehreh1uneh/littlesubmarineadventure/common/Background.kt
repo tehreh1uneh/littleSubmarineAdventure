@@ -49,4 +49,13 @@ class Background(vararg region: TextureRegion, vX: Float = 0f, vY: Float = 0f) :
     override fun touchUp(touch: Vector2, pointer: Int) {
         sprites.forEach { it.touchUp(touch, pointer) }
     }
+
+    fun stop() {
+        for (sprite in sprites) {
+            with(sprite) {
+                mainSprite.v.setZero()
+                additionalSprite.v.setZero()
+            }
+        }
+    }
 }
