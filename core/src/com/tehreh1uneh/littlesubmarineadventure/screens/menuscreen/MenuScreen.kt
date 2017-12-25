@@ -12,8 +12,6 @@ import com.tehreh1uneh.littlesubmarineadventure.engine.sprites.OnTouchScalingBut
 import com.tehreh1uneh.littlesubmarineadventure.engine.ui.TouchListener
 import com.tehreh1uneh.littlesubmarineadventure.screens.gamescreen.GameScreen
 
-private const val BUTTON_WIDTH = 0.1f
-private const val BUTTON_SCALE = 0.9f
 private const val BUBBLES_AMOUNT = 30
 private const val V_BUBBLE_MIN = 0.05f
 private const val V_BUBBLE_MAX = 0.1f
