@@ -7,6 +7,7 @@ class Trap(vararg region: TextureRegion, vX: Float = 0f, vY: Float = 0f) : Sprit
 
     private var updateRate: Float = 0.05f
     private var counter: Float = 0f
+    internal var counted = false
 
     override fun update(delta: Float) {
         counter += delta

@@ -64,6 +64,6 @@ open class Rect(x: Float = 0f, y: Float = 0f, var halfWidth: Float = 0f, var hal
     //endregion
 
     operator fun contains(touch: Vector2) = touch.x in left..right && touch.y in bottom..top
-    infix fun intersect(other: Rect) = (other.left in left..right || other.right in left..right) && (other.top in bottom..top || other.bottom in bottom..top)
+    open infix fun intersect(other: Rect) = left < other.right && right > other.left && bottom < other.top && top > other.bottom
     infix fun toTheLeftOf(other: Rect) = !intersect(other) && right < other.left
 }

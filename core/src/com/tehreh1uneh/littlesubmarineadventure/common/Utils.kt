@@ -11,6 +11,11 @@ internal const val PATH_BACKGROUND_GREY = "textures/background/background_gray.p
 internal const val PATH_BACKGROUND_MASK = "textures/background/background_(%).png"
 internal const val PATH_MENU_ATLAS = "textures/menu/atlas/atlas_menuScreen.pack"
 internal const val PATH_GAME_ATLAS = "textures/game/atlas/game_screen.pack"
+internal const val PATH_FONT_DESCRIPTION = "fonts/font_monaco.fnt"
+internal const val PATH_FONT_IMAGE = "fonts/font_monaco.png"
+internal const val FONT_HEIGHT_SCALE = 0.05f
+internal const val SCORE_DESCRIPTION = "Score: "
+
 
 
 internal const val BUTTON_WIDTH = 0.1f
@@ -24,3 +29,6 @@ internal fun evalRandomFloat(min: Float = 0f, max: Float = 1f) = rndGen.nextFloa
 internal fun Array<Texture>.toTextureRegion(): Array<TextureRegion> = Array(this.size) { TextureRegion(this[it]) }
 internal fun getBgTextures(): Array<Texture> = Array(4) { Sprite2DTexture(PATH_BACKGROUND_MASK.replace("%", it.toString())) }
 
+internal fun StringBuilder.clear() {
+    setLength(0)
+}

@@ -12,6 +12,7 @@ import com.tehreh1uneh.littlesubmarineadventure.enemies.TrapEmitter
 import com.tehreh1uneh.littlesubmarineadventure.enemies.TrapPool
 import com.tehreh1uneh.littlesubmarineadventure.engine.Audio
 import com.tehreh1uneh.littlesubmarineadventure.engine.Base2DScreen
+import com.tehreh1uneh.littlesubmarineadventure.engine.Font
 import com.tehreh1uneh.littlesubmarineadventure.engine.Sprite2DTexture
 import com.tehreh1uneh.littlesubmarineadventure.engine.math.Rect
 import com.tehreh1uneh.littlesubmarineadventure.engine.sprites.OnTouchScalingButton
@@ -35,6 +36,9 @@ class GameScreen(game: Game) : Base2DScreen(game), TouchListener {
     private val trapPool = TrapPool(atlas)
     private val trapEmitter = TrapEmitter(trapPool, worldBounds, submarine.height)
     private val buttonRestart = OnTouchScalingButton(atlas.findRegion("button_restart_game"), touchListener = this, scale = BUTTON_SCALE)
+    private val font = Font(PATH_FONT_DESCRIPTION, PATH_FONT_IMAGE)
+    private val stringBuilderScore = StringBuilder()
+    private var score = 0
 
     override fun show() {
         super.show()
@@ -56,6 +60,7 @@ class GameScreen(game: Game) : Base2DScreen(game), TouchListener {
         buttonRestart.resize(worldBounds)
 
         trapEmitter.resize(worldBounds, submarine.height)
+        font.heightScale = worldBounds.height * FONT_HEIGHT_SCALE
     }
 
     override fun render(delta: Float) {
@@ -80,6 +85,7 @@ class GameScreen(game: Game) : Base2DScreen(game), TouchListener {
         backgroundTextures.forEach { it.dispose() }
         backgroundGreyTexture.dispose()
         atlas.dispose()
+        font.dispose()
         Audio.dispose()
 
         super.dispose()
@@ -109,14 +115,34 @@ class GameScreen(game: Game) : Base2DScreen(game), TouchListener {
             backgroundGrey.draw(batch)
             buttonRestart.draw(batch)
         }
+
+        drawScore()
+    }
+
+    private fun drawScore(x: Float = worldBounds.left, y: Float = worldBounds.top) {
+        stringBuilderScore.clear()
+        font.draw(batch, stringBuilderScore.append(SCORE_DESCRIPTION).append(score), x, y)
     }
 
     private fun checkCollisions() {
         val traps = trapPool.active
+        var scoreIncreased = false
+
         traps.forEach {
+            if (it toTheLeftOf submarine) {
+                if (!scoreIncreased && !it.counted) {
+                    score++
+                    scoreIncreased = true
+                }
+                if (!it.counted && !it.destroyed) {
+                    it.counted = true
+                }
+            }
+
             if (it toTheLeftOf worldBounds) {
                 it.destroyed = true
-            } else if (it intersect submarine) {
+                it.counted = false
+            } else if (submarine intersect it) {
                 stopGame()
                 return@forEach
             }
@@ -160,8 +186,10 @@ class GameScreen(game: Game) : Base2DScreen(game), TouchListener {
 
     private fun restartGame() {
         state = ObjectState.ACTIVE
+        score = 0
         background.initSpeed()
         submarine.centerPos.y = worldBounds.centerPos.y
+        submarine.resize(worldBounds)
 
         val traps = trapPool.active
         traps.forEach {
