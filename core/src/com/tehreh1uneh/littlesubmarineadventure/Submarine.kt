@@ -229,4 +229,9 @@ class Submarine(region: TextureRegion) : Sprite(region) {
         }
         return false
     }
+
+    fun setStartPosition() {
+        centerPos.y = worldBounds.centerPos.y
+        calculateBorders()
+    }
 }

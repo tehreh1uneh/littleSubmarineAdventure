@@ -16,14 +16,12 @@ abstract class SpritesPool<T> : SpriteBehaviour, Resizable where T : SpriteBehav
     fun get(): T {
         val element = if (inactive.isEmpty()) newElement() else inactive.removeAt(inactive.lastIndex)
         active += element
-        println("active traps:${active.size} inactive traps: ${inactive.size}")
         return element
     }
 
     fun free(element: T) {
         if (!active.remove(element)) throw RuntimeException("Element does not exists in active elements")
         inactive += element
-        println("active traps:${active.size} inactive traps: ${inactive.size}")
     }
 
     fun freeAll() {

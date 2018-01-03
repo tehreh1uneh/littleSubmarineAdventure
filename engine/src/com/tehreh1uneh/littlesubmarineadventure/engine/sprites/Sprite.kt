@@ -56,6 +56,8 @@ open class Sprite(vararg region: TextureRegion, vX: Float = 0f, vY: Float = 0f) 
         scaleY = scale
     }
 
-
+    fun stop() {
+        v.setZero()
+    }
 }
 

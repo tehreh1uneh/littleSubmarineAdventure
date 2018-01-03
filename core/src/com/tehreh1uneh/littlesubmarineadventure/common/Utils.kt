@@ -16,8 +16,6 @@ internal const val PATH_FONT_IMAGE = "fonts/font_monaco.png"
 internal const val FONT_HEIGHT_SCALE = 0.05f
 internal const val SCORE_DESCRIPTION = "Score: "
 
-
-
 internal const val BUTTON_WIDTH = 0.1f
 internal const val BUTTON_SCALE = 0.9f
 
@@ -29,6 +27,7 @@ internal fun evalRandomFloat(min: Float = 0f, max: Float = 1f) = rndGen.nextFloa
 internal fun Array<Texture>.toTextureRegion(): Array<TextureRegion> = Array(this.size) { TextureRegion(this[it]) }
 internal fun getBgTextures(): Array<Texture> = Array(4) { Sprite2DTexture(PATH_BACKGROUND_MASK.replace("%", it.toString())) }
 
-internal fun StringBuilder.clear() {
+internal fun StringBuilder.clear(): StringBuilder {
     setLength(0)
+    return this
 }

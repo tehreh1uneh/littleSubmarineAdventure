@@ -7,7 +7,6 @@ import com.badlogic.gdx.math.Vector2
 import com.tehreh1uneh.littlesubmarineadventure.Submarine
 import com.tehreh1uneh.littlesubmarineadventure.common.*
 import com.tehreh1uneh.littlesubmarineadventure.enemies.TRAP_HEIGHT_BASIC
-import com.tehreh1uneh.littlesubmarineadventure.enemies.TRAP_SPEED_BASIC
 import com.tehreh1uneh.littlesubmarineadventure.enemies.TrapEmitter
 import com.tehreh1uneh.littlesubmarineadventure.enemies.TrapPool
 import com.tehreh1uneh.littlesubmarineadventure.engine.Audio
@@ -22,12 +21,8 @@ import com.tehreh1uneh.littlesubmarineadventure.engine.ui.TouchListener
 class GameScreen(game: Game) : Base2DScreen(game), TouchListener {
 
     private val backgroundTextures = getBgTextures()
-    private val background = Background(*backgroundTextures.toTextureRegion())
+    private val background = Background(*backgroundTextures.toTextureRegion(), initSpeed = true)
     private var state = ObjectState.ACTIVE
-
-    init {
-        background.initSpeed()
-    }
 
     private val atlas = TextureAtlas(PATH_GAME_ATLAS)
     private val submarine = Submarine(atlas.findRegion("submarine"))
@@ -42,7 +37,7 @@ class GameScreen(game: Game) : Base2DScreen(game), TouchListener {
 
     override fun show() {
         super.show()
-        Audio.play()
+        Audio.turnAudio(soundsOn = true)
     }
 
     override fun resize(worldBounds: Rect) {
@@ -115,13 +110,11 @@ class GameScreen(game: Game) : Base2DScreen(game), TouchListener {
             backgroundGrey.draw(batch)
             buttonRestart.draw(batch)
         }
-
         drawScore()
     }
 
     private fun drawScore(x: Float = worldBounds.left, y: Float = worldBounds.top) {
-        stringBuilderScore.clear()
-        font.draw(batch, stringBuilderScore.append(SCORE_DESCRIPTION).append(score), x, y)
+        font.draw(batch, stringBuilderScore.clear().append(SCORE_DESCRIPTION).append(score), x, y)
     }
 
     private fun checkCollisions() {
@@ -151,13 +144,9 @@ class GameScreen(game: Game) : Base2DScreen(game), TouchListener {
 
     private fun stopGame() {
         state = ObjectState.STOP
-        submarine.v.setZero()
+        submarine.stop()
         background.stop()
-
-        val traps = trapPool.active
-        traps.forEach {
-            it.v.setZero()
-        }
+        trapPool.stop()
     }
 
     private fun deleteAllDestroyed() {
@@ -188,13 +177,7 @@ class GameScreen(game: Game) : Base2DScreen(game), TouchListener {
         state = ObjectState.ACTIVE
         score = 0
         background.initSpeed()
-        submarine.centerPos.y = worldBounds.centerPos.y
-        submarine.resize(worldBounds)
-
-        val traps = trapPool.active
-        traps.forEach {
-            it.vX = TRAP_SPEED_BASIC
-        }
-        trapPool.freeAll()
+        submarine.setStartPosition()
+        trapPool.setStartState()
     }
 }
